@@ -34,6 +34,21 @@ const time = readingTime(body);
       <slot />
     </div>
   </article>
+
+  <script>
+    import mermaid from 'mermaid';
+
+    mermaid.initialize({ startOnLoad: false, theme: 'dark' });
+
+    document.querySelectorAll('pre > code.language-mermaid').forEach(async (el, i) => {
+      const pre = el.parentElement!;
+      const container = document.createElement('div');
+      container.className = 'mermaid';
+      const { svg } = await mermaid.render(`mermaid-${i}`, el.textContent ?? '');
+      container.innerHTML = svg;
+      pre.replaceWith(container);
+    });
+  </script>
 </BaseLayout>
 
 <style>

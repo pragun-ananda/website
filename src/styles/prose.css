@@ -142,11 +142,13 @@
   font-size: 1.1em;
 }
 
-/* Mermaid diagrams (rendered as SVG data-URI images by rehype-mermaid) */
-.prose img[src^="data:image/svg"] {
-  display: block;
-  margin: 2rem auto;
-  border: none;
+/* Mermaid diagrams */
+.prose .mermaid {
+  margin: 2rem 0;
+  text-align: center;
+}
+
+.prose .mermaid svg {
   max-width: 100%;
 }
 

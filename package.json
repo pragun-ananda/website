@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "npx playwright install chromium && astro build",
+    "build": "astro build",
     "preview": "astro preview",
     "astro": "astro"
   },
@@ -16,9 +16,8 @@
     "@astrojs/rss": "^4.0.17",
     "@astrojs/sitemap": "^3.7.1",
     "astro": "^6.0.3",
-    "playwright": "^1.58.2",
+    "mermaid": "^11.13.0",
     "rehype-katex": "^7.0.1",
-    "rehype-mermaid": "^3.0.0",
     "remark-math": "^6.0.0"
   }
 }
