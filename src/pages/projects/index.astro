@@ -1,0 +1,53 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import { getCollection } from 'astro:content';
+
+const projects = (await getCollection('projects'))
+  .sort((a, b) => a.data.sortOrder - b.data.sortOrder);
+---
+
+<BaseLayout title="projects — pragun" description="Things I've built and am working on.">
+  <h1 class="page-title">## projects</h1>
+  <p class="subtitle">Things I've built or am working on.</p>
+
+  {projects.length > 0 ? (
+    <div class="project-grid">
+      {projects.map((project) => (
+        <ProjectCard
+          title={project.data.title}
+          description={project.data.description}
+          url={project.data.url}
+          repo={project.data.repo}
+          tags={project.data.tags}
+          status={project.data.status}
+        />
+      ))}
+    </div>
+  ) : (
+    <p class="empty">Coming soon.</p>
+  )}
+</BaseLayout>
+
+<style>
+  .page-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+  }
+
+  .subtitle {
+    color: var(--muted);
+    font-size: 0.875rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .project-grid {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .empty {
+    color: var(--muted);
+  }
+</style>

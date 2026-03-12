@@ -1,0 +1,44 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="footer-inner">
+    <span class="copyright">&copy; {year} pragun</span>
+    <div class="footer-links">
+      <a href="https://github.com/pragun" target="_blank" rel="noopener noreferrer">github</a>
+      <a href="/rss.xml">rss</a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    border-top: 1px solid var(--border);
+    margin-top: auto;
+  }
+
+  .footer-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8125rem;
+    color: var(--muted);
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .footer-links a {
+    color: var(--muted);
+  }
+
+  .footer-links a:hover {
+    color: var(--accent);
+  }
+</style>

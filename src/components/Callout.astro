@@ -1,0 +1,46 @@
+---
+interface Props {
+  type?: 'info' | 'warning' | 'note';
+  title?: string;
+}
+
+const { type = 'note', title } = Astro.props;
+
+const prefixes: Record<string, string> = {
+  info: 'INFO',
+  warning: 'WARN',
+  note: 'NOTE',
+};
+---
+
+<aside class:list={['callout', type]}>
+  <div class="callout-header">[{prefixes[type]}]{title ? ` ${title}` : ''}</div>
+  <div class="callout-body">
+    <slot />
+  </div>
+</aside>
+
+<style>
+  .callout {
+    margin: 1.5rem 0;
+    padding: 1rem;
+    border-radius: 4px;
+    border-left: 3px solid var(--border);
+    background: var(--surface);
+    font-size: 0.875rem;
+  }
+
+  .callout.info { border-left-color: var(--accent); }
+  .callout.warning { border-left-color: var(--accent-secondary); }
+  .callout.note { border-left-color: var(--muted); }
+
+  .callout-header {
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    font-size: 0.8125rem;
+  }
+
+  .info .callout-header { color: var(--accent); }
+  .warning .callout-header { color: var(--accent-secondary); }
+  .note .callout-header { color: var(--muted); }
+</style>

@@ -1,0 +1,65 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostList from '../components/PostList.astro';
+import { getSortedPosts } from '../utils/posts';
+
+const posts = await getSortedPosts();
+---
+
+<BaseLayout title="pragun" description="Research blog on AI, infrastructure, and systems.">
+  <section class="hero">
+    <p class="intro">
+      <span class="prompt">$</span> hello, i'm <strong>pragun</strong><span class="cursor"></span>
+    </p>
+    <p class="bio">
+      I write about AI research, infrastructure, and systems.
+      This is where I think out loud.
+    </p>
+  </section>
+
+  <hr />
+
+  <section class="recent">
+    <h2 class="section-title">## all posts</h2>
+    {posts.length > 0 ? (
+      <PostList posts={posts} />
+    ) : (
+      <p class="empty">No posts yet. Check back soon.</p>
+    )}
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    padding: 2rem 0 1rem;
+  }
+
+  .intro {
+    font-size: 1.375rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+  }
+
+  .prompt {
+    color: var(--accent);
+    margin-right: 0.5rem;
+  }
+
+  .bio {
+    color: var(--muted);
+    font-size: 0.9375rem;
+    max-width: 500px;
+  }
+
+  .section-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .empty {
+    color: var(--muted);
+    font-size: 0.875rem;
+  }
+</style>

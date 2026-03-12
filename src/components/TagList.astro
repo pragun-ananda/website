@@ -1,0 +1,37 @@
+---
+interface Props {
+  tags: string[];
+  linked?: boolean;
+}
+
+const { tags, linked = true } = Astro.props;
+---
+
+<span class="tag-list">
+  {tags.map((tag) =>
+    linked ? (
+      <a href={`/tags/${tag}`} class="tag">[{tag}]</a>
+    ) : (
+      <span class="tag">[{tag}]</span>
+    )
+  )}
+</span>
+
+<style>
+  .tag-list {
+    display: inline-flex;
+    gap: 0.375rem;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    font-size: 0.8125rem;
+    color: var(--accent-secondary);
+    text-decoration: none;
+  }
+
+  a.tag:hover {
+    color: var(--text);
+    text-decoration: none;
+  }
+</style>

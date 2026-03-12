@@ -1,0 +1,62 @@
+---
+import { formatDate } from '../utils/date';
+
+interface Post {
+  id: string;
+  data: {
+    title: string;
+    pubDate: Date;
+    tags: string[];
+  };
+}
+
+interface Props {
+  posts: Post[];
+}
+
+const { posts } = Astro.props;
+---
+
+<ul class="post-list">
+  {posts.map((post) => (
+    <li class="post-row">
+      <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
+      <a href={`/blog/${post.id}`}>{post.data.title}</a>
+    </li>
+  ))}
+</ul>
+
+<style>
+  .post-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .post-row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    padding: 0.3rem 0;
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+
+  .post-row time {
+    color: var(--muted);
+    font-size: 0.8125rem;
+    flex-shrink: 0;
+  }
+
+  .post-row a {
+    color: var(--text);
+    text-decoration: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .post-row a:hover {
+    color: var(--accent);
+  }
+
+</style>

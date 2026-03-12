@@ -1,0 +1,77 @@
+---
+interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+interface Props {
+  headings: Heading[];
+}
+
+const { headings } = Astro.props;
+const filtered = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
+---
+
+{filtered.length > 0 && (
+  <details class="toc" open>
+    <summary class="toc-title">## table of contents</summary>
+    <nav class="toc-nav">
+      <ul>
+        {filtered.map((heading) => (
+          <li class={heading.depth === 3 ? 'indent' : ''}>
+            <a href={`#${heading.slug}`}>{heading.text}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </details>
+)}
+
+<style>
+  .toc {
+    margin: 1.5rem 0;
+    padding: 1rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-size: 0.875rem;
+  }
+
+  .toc-title {
+    cursor: pointer;
+    color: var(--muted);
+    font-weight: 500;
+    user-select: none;
+  }
+
+  .toc-title:hover {
+    color: var(--text);
+  }
+
+  .toc-nav {
+    margin-top: 0.75rem;
+  }
+
+  .toc-nav ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .toc-nav li {
+    margin: 0.25rem 0;
+  }
+
+  .toc-nav li.indent {
+    padding-left: 1.25rem;
+  }
+
+  .toc-nav a {
+    color: var(--muted);
+    text-decoration: none;
+  }
+
+  .toc-nav a:hover {
+    color: var(--accent);
+  }
+</style>

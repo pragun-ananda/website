@@ -1,0 +1,39 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="404 — pragun" description="Page not found.">
+  <div class="not-found">
+    <h1>404</h1>
+    <p class="message">$ cat page.txt</p>
+    <p class="error">cat: page.txt: No such file or directory</p>
+    <a href="/" class="home-link">cd ~</a>
+  </div>
+</BaseLayout>
+
+<style>
+  .not-found {
+    padding: 4rem 0;
+  }
+
+  h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 1rem;
+  }
+
+  .message {
+    color: var(--muted);
+    margin-bottom: 0.25rem;
+  }
+
+  .error {
+    color: var(--accent-secondary);
+    margin-bottom: 2rem;
+  }
+
+  .home-link {
+    font-size: 0.875rem;
+  }
+</style>

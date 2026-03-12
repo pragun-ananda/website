@@ -1,0 +1,100 @@
+---
+import TagList from './TagList.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  url?: string;
+  repo?: string;
+  tags: string[];
+  status: 'active' | 'archived' | 'wip';
+}
+
+const { title, description, url, repo, tags, status } = Astro.props;
+
+const statusLabel: Record<string, string> = {
+  active: '[active]',
+  archived: '[archived]',
+  wip: '[wip]',
+};
+---
+
+<article class="project-card">
+  <div class="project-header">
+    <h3 class="project-title">
+      {url ? <a href={url} target="_blank" rel="noopener noreferrer">{title}</a> : title}
+    </h3>
+    <span class:list={['status', status]}>{statusLabel[status]}</span>
+  </div>
+  <p class="project-description">{description}</p>
+  <div class="project-footer">
+    {tags.length > 0 && <TagList tags={tags} linked={false} />}
+    {repo && (
+      <a href={repo} target="_blank" rel="noopener noreferrer" class="repo-link">
+        [repo]
+      </a>
+    )}
+  </div>
+</article>
+
+<style>
+  .project-card {
+    padding: 1.25rem;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: var(--surface);
+  }
+
+  .project-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .project-title {
+    font-size: 1rem;
+    font-weight: 700;
+  }
+
+  .project-title a {
+    color: var(--text);
+  }
+
+  .project-title a:hover {
+    color: var(--accent);
+  }
+
+  .status {
+    font-size: 0.75rem;
+    white-space: nowrap;
+  }
+
+  .status.active { color: var(--accent); }
+  .status.wip { color: var(--accent-secondary); }
+  .status.archived { color: var(--muted); }
+
+  .project-description {
+    color: var(--muted);
+    font-size: 0.875rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .project-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .repo-link {
+    font-size: 0.8125rem;
+    color: var(--muted);
+  }
+
+  .repo-link:hover {
+    color: var(--accent);
+  }
+</style>
