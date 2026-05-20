@@ -34,6 +34,11 @@ const { title, description, image = '/og-default.png', math = false } = Astro.pr
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={new URL(image, Astro.site)} />
 
+<!-- Inter from Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
 <!-- Fonts (preload critical weights) -->
 <link rel="preload" href="/fonts/jetbrains-mono-regular.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="preload" href="/fonts/jetbrains-mono-bold.woff2" as="font" type="font/woff2" crossorigin />

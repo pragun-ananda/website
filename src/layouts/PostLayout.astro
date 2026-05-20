@@ -25,6 +25,7 @@ const time = readingTime(body);
 <BaseLayout title={`${title} — Pragun`} description={description} image={ogImage} math={math}>
   <article>
     <header class="post-header">
+      <a href="/blog" class="back-link">← Writing</a>
       <h1 class="post-title">{title}</h1>
       {abstract && <p class="post-abstract">{abstract}</p>}
       <PostMeta pubDate={pubDate} updatedDate={updatedDate} readingTime={time} tags={tags} />
@@ -37,9 +38,7 @@ const time = readingTime(body);
 
   <script>
     import mermaid from 'mermaid';
-
     mermaid.initialize({ startOnLoad: false, theme: 'dark' });
-
     document.querySelectorAll('pre > code.language-mermaid').forEach(async (el, i) => {
       const pre = el.parentElement!;
       const container = document.createElement('div');
@@ -52,23 +51,41 @@ const time = readingTime(body);
 </BaseLayout>
 
 <style>
+  .back-link {
+    display: inline-block;
+    font-size: 0.875rem;
+    color: var(--muted);
+    text-decoration: none;
+    margin-bottom: 1.75rem;
+    transition: color 0.15s;
+  }
+
+  .back-link:hover {
+    color: var(--text);
+    text-decoration: none;
+  }
+
   .post-header {
     margin-bottom: 0.5rem;
+    padding-bottom: 1.75rem;
+    border-bottom: 1px solid var(--border);
   }
 
   .post-title {
-    font-size: 1.875rem;
-    font-weight: 700;
-    letter-spacing: -0.025em;
-    line-height: 1.25;
-    margin-bottom: 0.5rem;
+    font-size: clamp(1.875rem, 4vw, 2.75rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+    margin-bottom: 0.75rem;
+    color: var(--text);
   }
 
   .post-abstract {
+    font-size: 1.0625rem;
     color: var(--muted);
-    font-size: 1rem;
-    line-height: 1.6;
-    margin-top: 0.75rem;
+    line-height: 1.65;
+    margin-top: 0.625rem;
     margin-bottom: 0.25rem;
+    max-width: 600px;
   }
 </style>

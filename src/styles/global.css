@@ -42,43 +42,45 @@
 
 /* === Theme Variables === */
 :root {
-  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, 'Helvetica Neue', Arial, sans-serif;
-  --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
-  --max-width: 760px;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --max-width: 840px;
 
   /* Dark theme (default) */
-  --bg: #111318;
-  --surface: #1c2030;
-  --text: #dde1ea;
-  --muted: #8891a8;
-  --accent: #7aa2d4;
-  --accent-hover: #9bbde8;
-  --accent-secondary: #c4a882;
-  --border: #252a38;
-  --code-bg: #1c2030;
-  --tag-bg: #1c2030;
-  --tag-text: #8891a8;
+  --bg: #0f1117;
+  --surface: #181c27;
+  --text: #e8eaf0;
+  --muted: #8b92a8;
+  --accent: #6b9fd4;
+  --accent-hover: #89b4e0;
+  --accent-secondary: #c4a872;
+  --border: #222636;
+  --code-bg: #181c27;
+  --tag-bg: #1e2235;
+  --tag-text: #8b92a8;
+  --tag-border: #2a2f45;
 }
 
 [data-theme='light'] {
-  --bg: #fafafa;
-  --surface: #f3f4f6;
-  --text: #111318;
+  --bg: #ffffff;
+  --surface: #f5f6f8;
+  --text: #0f1117;
   --muted: #6b7280;
-  --accent: #2563a8;
-  --accent-hover: #1d4f8a;
-  --accent-secondary: #8b6914;
-  --border: #e4e6eb;
-  --code-bg: #f3f4f6;
-  --tag-bg: #e9ebf0;
-  --tag-text: #6b7280;
+  --accent: #1a56a0;
+  --accent-hover: #154a8e;
+  --accent-secondary: #8b6300;
+  --border: #e5e7eb;
+  --code-bg: #f5f6f8;
+  --tag-bg: #eef0f4;
+  --tag-text: #555e70;
+  --tag-border: #dde0e8;
 }
 
 /* === Base === */
 html {
   font-family: var(--font-sans);
-  font-size: 17px;
-  line-height: 1.75;
+  font-size: 16px;
+  line-height: 1.7;
   background-color: var(--bg);
   color: var(--text);
   -webkit-font-smoothing: antialiased;
@@ -97,7 +99,7 @@ main {
   width: 100%;
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: 2.5rem 1.5rem;
+  padding: 2.5rem 2rem;
 }
 
 a {
@@ -124,7 +126,7 @@ hr {
 
 ::selection {
   background-color: var(--accent);
-  color: var(--bg);
+  color: #fff;
 }
 
 /* === Scrollbar === */

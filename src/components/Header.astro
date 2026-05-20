@@ -12,7 +12,7 @@ const navLinks = [
 
 <header class="header">
   <nav class="nav">
-    <a href="/" class="nav-home">Pragun</a>
+    <a href="/" class="nav-home">Pragun Ananda</a>
     <div class="nav-links">
       {navLinks.map(({ href, label }) => (
         <a
@@ -39,7 +39,7 @@ const navLinks = [
   .nav {
     max-width: var(--max-width);
     margin: 0 auto;
-    padding: 1rem 1.5rem;
+    padding: 1.125rem 2rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -49,28 +49,29 @@ const navLinks = [
   .nav-home {
     font-weight: 600;
     font-size: 0.9375rem;
+    letter-spacing: -0.02em;
     color: var(--text);
     text-decoration: none;
-    letter-spacing: -0.01em;
     white-space: nowrap;
   }
 
   .nav-home:hover {
+    color: var(--text);
     text-decoration: none;
-    color: var(--accent);
+    opacity: 0.75;
   }
 
   .nav-links {
     display: flex;
     align-items: center;
-    gap: 1.5rem;
-    flex-wrap: wrap;
+    gap: 1.75rem;
   }
 
   .nav-link {
     color: var(--muted);
     text-decoration: none;
-    font-size: 0.875rem;
+    font-size: 0.9rem;
+    font-weight: 400;
     transition: color 0.15s;
   }
 
