@@ -6,20 +6,20 @@ import { getSortedPosts } from '../utils/posts';
 const posts = await getSortedPosts();
 ---
 
-<BaseLayout title="pragun" description="Research blog on AI, infrastructure, and systems.">
+<BaseLayout title="Pragun" description="Research blog on AI, infrastructure, and systems.">
   <section class="hero">
-    <p class="intro">
-      <span class="prompt">$</span> hello, i'm <strong>pragun</strong><span class="cursor"></span>
-    </p>
+    <h1 class="name">Pragun Ananda</h1>
+    <p class="role">Senior Staff Research Engineer · AI Systems</p>
     <p class="bio">
-      Thoughts about AI research, infrastructure, and systems.
+      I write about machine learning research, inference infrastructure, and the engineering
+      behind large-scale AI systems.
     </p>
   </section>
 
   <hr />
 
   <section class="recent">
-    <h2 class="section-title">## all posts</h2>
+    <h2 class="section-title">Writing</h2>
     {posts.length > 0 ? (
       <PostList posts={posts} />
     ) : (
@@ -30,31 +30,39 @@ const posts = await getSortedPosts();
 
 <style>
   .hero {
-    padding: 2rem 0 1rem;
+    padding: 2.5rem 0 1.5rem;
   }
 
-  .intro {
-    font-size: 1.375rem;
+  .name {
+    font-size: 1.5rem;
     font-weight: 700;
-    margin-bottom: 0.75rem;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.25rem;
+    color: var(--text);
   }
 
-  .prompt {
+  .role {
+    font-size: 0.875rem;
     color: var(--accent);
-    margin-right: 0.5rem;
+    margin-bottom: 1rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
   }
 
   .bio {
     color: var(--muted);
     font-size: 0.9375rem;
-    max-width: 500px;
+    max-width: 520px;
+    line-height: 1.65;
   }
 
   .section-title {
-    font-size: 1.125rem;
-    font-weight: 700;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
     color: var(--muted);
-    margin-bottom: 0.5rem;
+    margin-bottom: 1rem;
   }
 
   .empty {

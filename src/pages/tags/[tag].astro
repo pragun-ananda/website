@@ -20,8 +20,9 @@ export async function getStaticPaths() {
 const { tag, posts } = Astro.props;
 ---
 
-<BaseLayout title={`[${tag}] — pragun`} description={`Posts tagged ${tag}.`}>
-  <h1 class="page-title">## posts tagged [{tag}]</h1>
+<BaseLayout title={`${tag} — Pragun`} description={`Posts tagged ${tag}.`}>
+  <h1 class="page-title">#{tag}</h1>
+  <p class="subtitle">{posts.length} post{posts.length !== 1 ? 's' : ''}</p>
 
   <div class="post-list">
     {posts.map((post: any) => (
@@ -35,19 +36,33 @@ const { tag, posts } = Astro.props;
     ))}
   </div>
 
-  <a href="/tags" class="back-link">&larr; all tags</a>
+  <a href="/tags" class="back-link">← All tags</a>
 </BaseLayout>
 
 <style>
   .page-title {
     font-size: 1.75rem;
     font-weight: 700;
-    margin-bottom: 1.5rem;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.25rem;
+  }
+
+  .subtitle {
+    color: var(--muted);
+    font-size: 0.875rem;
+    margin-bottom: 2rem;
   }
 
   .back-link {
     display: inline-block;
-    margin-top: 1.5rem;
+    margin-top: 1.75rem;
     font-size: 0.875rem;
+    color: var(--muted);
+    text-decoration: none;
+  }
+
+  .back-link:hover {
+    color: var(--text);
+    text-decoration: none;
   }
 </style>

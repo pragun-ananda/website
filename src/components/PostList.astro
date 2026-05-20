@@ -35,9 +35,9 @@ const { posts } = Astro.props;
   .post-row {
     display: flex;
     align-items: baseline;
-    gap: 0.75rem;
-    padding: 0.3rem 0;
-    font-size: 0.875rem;
+    gap: 1rem;
+    padding: 0.4rem 0;
+    font-size: 0.9375rem;
     line-height: 1.5;
   }
 
@@ -45,18 +45,17 @@ const { posts } = Astro.props;
     color: var(--muted);
     font-size: 0.8125rem;
     flex-shrink: 0;
+    font-variant-numeric: tabular-nums;
+    min-width: 6.5rem;
   }
 
   .post-row a {
     color: var(--text);
     text-decoration: none;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
   }
 
   .post-row a:hover {
     color: var(--accent);
+    text-decoration: none;
   }
-
 </style>

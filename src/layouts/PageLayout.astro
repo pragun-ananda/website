@@ -10,7 +10,7 @@ interface Props {
 const { title, description } = Astro.props;
 ---
 
-<BaseLayout title={`${title} — pragun`} description={description}>
+<BaseLayout title={`${title} — Pragun`} description={description}>
   <div class="page">
     <h1 class="page-title">{title}</h1>
     <div class="prose">
@@ -23,7 +23,8 @@ const { title, description } = Astro.props;
   .page-title {
     font-size: 1.75rem;
     font-weight: 700;
-    line-height: 1.3;
-    margin-bottom: 1.5rem;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+    margin-bottom: 1.75rem;
   }
 </style>

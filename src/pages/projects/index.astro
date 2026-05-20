@@ -7,8 +7,8 @@ const projects = (await getCollection('projects'))
   .sort((a, b) => a.data.sortOrder - b.data.sortOrder);
 ---
 
-<BaseLayout title="projects — pragun" description="Things I've built and am working on.">
-  <h1 class="page-title">## projects</h1>
+<BaseLayout title="Projects — Pragun" description="Things I've built and am working on.">
+  <h1 class="page-title">Projects</h1>
   <p class="subtitle">Things I've built or am working on.</p>
 
   {projects.length > 0 ? (
@@ -33,13 +33,14 @@ const projects = (await getCollection('projects'))
   .page-title {
     font-size: 1.75rem;
     font-weight: 700;
-    margin-bottom: 0.25rem;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.375rem;
   }
 
   .subtitle {
     color: var(--muted);
-    font-size: 0.875rem;
-    margin-bottom: 1.5rem;
+    font-size: 0.9375rem;
+    margin-bottom: 2.5rem;
   }
 
   .project-grid {

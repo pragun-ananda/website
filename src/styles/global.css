@@ -42,40 +42,48 @@
 
 /* === Theme Variables === */
 :root {
-  --font-mono: 'JetBrains Mono', monospace;
-  --max-width: 720px;
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+  --max-width: 760px;
 
   /* Dark theme (default) */
-  --bg: #0d1117;
-  --surface: #161b22;
-  --text: #e6edf3;
-  --muted: #7d8590;
-  --accent: #3fb950;
-  --accent-secondary: #d29922;
-  --border: #30363d;
-  --code-bg: #161b22;
+  --bg: #111318;
+  --surface: #1c2030;
+  --text: #dde1ea;
+  --muted: #8891a8;
+  --accent: #7aa2d4;
+  --accent-hover: #9bbde8;
+  --accent-secondary: #c4a882;
+  --border: #252a38;
+  --code-bg: #1c2030;
+  --tag-bg: #1c2030;
+  --tag-text: #8891a8;
 }
 
 [data-theme='light'] {
-  --bg: #ffffff;
-  --surface: #f6f8fa;
-  --text: #1f2328;
-  --muted: #656d76;
-  --accent: #1a7f37;
-  --accent-secondary: #9a6700;
-  --border: #d0d7de;
-  --code-bg: #f6f8fa;
+  --bg: #fafafa;
+  --surface: #f3f4f6;
+  --text: #111318;
+  --muted: #6b7280;
+  --accent: #2563a8;
+  --accent-hover: #1d4f8a;
+  --accent-secondary: #8b6914;
+  --border: #e4e6eb;
+  --code-bg: #f3f4f6;
+  --tag-bg: #e9ebf0;
+  --tag-text: #6b7280;
 }
 
 /* === Base === */
 html {
-  font-family: var(--font-mono);
-  font-size: 16px;
-  line-height: 1.7;
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 1.75;
   background-color: var(--bg);
   color: var(--text);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 body {
@@ -89,7 +97,7 @@ main {
   width: 100%;
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: 2rem 1.5rem;
+  padding: 2.5rem 1.5rem;
 }
 
 a {
@@ -98,7 +106,9 @@ a {
 }
 
 a:hover {
+  color: var(--accent-hover);
   text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 img {
@@ -109,7 +119,7 @@ img {
 hr {
   border: none;
   border-top: 1px solid var(--border);
-  margin: 2rem 0;
+  margin: 2.5rem 0;
 }
 
 ::selection {
@@ -119,7 +129,7 @@ hr {
 
 /* === Scrollbar === */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -128,28 +138,12 @@ hr {
 
 ::-webkit-scrollbar-thumb {
   background: var(--border);
-  border-radius: 4px;
+  border-radius: 3px;
 }
 
 /* === Shiki dual-theme support === */
-/* Dark is default — use --shiki-dark custom properties */
 :root:not([data-theme='light']) .astro-code,
 :root:not([data-theme='light']) .astro-code span {
   color: var(--shiki-dark) !important;
   background-color: var(--shiki-dark-bg) !important;
-}
-
-/* === Cursor blink animation === */
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
-
-.cursor {
-  display: inline-block;
-  width: 0.6em;
-  height: 1.1em;
-  background-color: var(--accent);
-  vertical-align: text-bottom;
-  animation: blink 1s step-end infinite;
 }

@@ -2,12 +2,12 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<BaseLayout title="404 — pragun" description="Page not found.">
+<BaseLayout title="404 — Pragun" description="Page not found.">
   <div class="not-found">
-    <h1>404</h1>
-    <p class="message">$ cat page.txt</p>
-    <p class="error">cat: page.txt: No such file or directory</p>
-    <a href="/" class="home-link">cd ~</a>
+    <p class="code">404</p>
+    <h1>Page not found</h1>
+    <p class="message">The page you're looking for doesn't exist or has been moved.</p>
+    <a href="/" class="home-link">← Back to home</a>
   </div>
 </BaseLayout>
 
@@ -16,24 +16,37 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     padding: 4rem 0;
   }
 
+  .code {
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+  }
+
   h1 {
-    font-size: 3rem;
+    font-size: 1.75rem;
     font-weight: 700;
-    color: var(--accent);
-    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.75rem;
+    color: var(--text);
   }
 
   .message {
     color: var(--muted);
-    margin-bottom: 0.25rem;
-  }
-
-  .error {
-    color: var(--accent-secondary);
+    font-size: 0.9375rem;
     margin-bottom: 2rem;
   }
 
   .home-link {
     font-size: 0.875rem;
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .home-link:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
 </style>

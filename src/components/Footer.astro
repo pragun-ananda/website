@@ -4,10 +4,10 @@ const year = new Date().getFullYear();
 
 <footer class="footer">
   <div class="footer-inner">
-    <span class="copyright">&copy; {year} pragun</span>
+    <span class="copyright">&copy; {year} Pragun Ananda</span>
     <div class="footer-links">
-      <a href="https://github.com/pragun-ananda" target="_blank" rel="noopener noreferrer">github</a>
-      <a href="/rss.xml">rss</a>
+      <a href="https://github.com/pragun-ananda" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <a href="/rss.xml">RSS</a>
     </div>
   </div>
 </footer>
@@ -21,7 +21,7 @@ const year = new Date().getFullYear();
   .footer-inner {
     max-width: var(--max-width);
     margin: 0 auto;
-    padding: 1.5rem;
+    padding: 1.25rem 1.5rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -31,14 +31,16 @@ const year = new Date().getFullYear();
 
   .footer-links {
     display: flex;
-    gap: 1rem;
+    gap: 1.25rem;
   }
 
   .footer-links a {
     color: var(--muted);
+    text-decoration: none;
   }
 
   .footer-links a:hover {
-    color: var(--accent);
+    color: var(--text);
+    text-decoration: none;
   }
 </style>

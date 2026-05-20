@@ -13,9 +13,9 @@ interface Props {
 const { title, description, url, repo, tags, status } = Astro.props;
 
 const statusLabel: Record<string, string> = {
-  active: '[active]',
-  archived: '[archived]',
-  wip: '[wip]',
+  active: 'Active',
+  archived: 'Archived',
+  wip: 'In progress',
 };
 ---
 
@@ -31,7 +31,7 @@ const statusLabel: Record<string, string> = {
     {tags.length > 0 && <TagList tags={tags} linked={false} />}
     {repo && (
       <a href={repo} target="_blank" rel="noopener noreferrer" class="repo-link">
-        [repo]
+        Source ↗
       </a>
     )}
   </div>
@@ -39,10 +39,15 @@ const statusLabel: Record<string, string> = {
 
 <style>
   .project-card {
-    padding: 1.25rem;
+    padding: 1.25rem 1.375rem;
     border: 1px solid var(--border);
-    border-radius: 4px;
+    border-radius: 8px;
     background: var(--surface);
+    transition: border-color 0.15s;
+  }
+
+  .project-card:hover {
+    border-color: var(--muted);
   }
 
   .project-header {
@@ -55,11 +60,13 @@ const statusLabel: Record<string, string> = {
 
   .project-title {
     font-size: 1rem;
-    font-weight: 700;
+    font-weight: 600;
+    letter-spacing: -0.01em;
   }
 
   .project-title a {
     color: var(--text);
+    text-decoration: none;
   }
 
   .project-title a:hover {
@@ -68,17 +75,32 @@ const statusLabel: Record<string, string> = {
 
   .status {
     font-size: 0.75rem;
+    font-weight: 500;
+    padding: 0.15em 0.55em;
+    border-radius: 4px;
     white-space: nowrap;
   }
 
-  .status.active { color: var(--accent); }
-  .status.wip { color: var(--accent-secondary); }
-  .status.archived { color: var(--muted); }
+  .status.active {
+    color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
+  }
+
+  .status.wip {
+    color: var(--accent-secondary);
+    background: color-mix(in srgb, var(--accent-secondary) 12%, transparent);
+  }
+
+  .status.archived {
+    color: var(--muted);
+    background: var(--border);
+  }
 
   .project-description {
     color: var(--muted);
     font-size: 0.875rem;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.875rem;
+    line-height: 1.6;
   }
 
   .project-footer {
@@ -92,9 +114,11 @@ const statusLabel: Record<string, string> = {
   .repo-link {
     font-size: 0.8125rem;
     color: var(--muted);
+    text-decoration: none;
   }
 
   .repo-link:hover {
     color: var(--accent);
+    text-decoration: none;
   }
 </style>

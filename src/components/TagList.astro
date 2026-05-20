@@ -10,9 +10,9 @@ const { tags, linked = true } = Astro.props;
 <span class="tag-list">
   {tags.map((tag) =>
     linked ? (
-      <a href={`/tags/${tag}`} class="tag">[{tag}]</a>
+      <a href={`/tags/${tag}`} class="tag">{tag}</a>
     ) : (
-      <span class="tag">[{tag}]</span>
+      <span class="tag">{tag}</span>
     )
   )}
 </span>
@@ -25,13 +25,20 @@ const { tags, linked = true } = Astro.props;
   }
 
   .tag {
-    font-size: 0.8125rem;
-    color: var(--accent-secondary);
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--tag-text);
+    background: var(--tag-bg);
     text-decoration: none;
+    padding: 0.15em 0.55em;
+    border-radius: 4px;
+    letter-spacing: 0.01em;
+    border: 1px solid var(--border);
   }
 
   a.tag:hover {
-    color: var(--text);
+    color: var(--accent);
+    border-color: var(--accent);
     text-decoration: none;
   }
 </style>
