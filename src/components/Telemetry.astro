@@ -1,0 +1,155 @@
+---
+import { getCollection } from 'astro:content';
+
+const posts = await getCollection('blog');
+const activePosts = posts.filter(p => import.meta.env.PROD ? !p.data.draft : true);
+const projects = await getCollection('projects');
+
+const totalPosts = activePosts.length;
+const totalProjects = projects.length;
+---
+
+<div class="telemetry-panel tech-box">
+  <div class="telemetry-header">
+    <div class="status-indicator">
+      <span class="blinking-dot"></span>
+      <span class="status-text">SYS_STATUS // ONLINE</span>
+    </div>
+    <div class="terminal-id">PRGN_CORE_v6.1</div>
+  </div>
+  <div class="telemetry-grid">
+    <div class="telemetry-item">
+      <span class="label">POSTS_DB</span>
+      <span class="value">[{totalPosts.toString().padStart(2, '0')}]</span>
+    </div>
+    <div class="telemetry-item">
+      <span class="label">PROJECTS_DB</span>
+      <span class="value">[{totalProjects.toString().padStart(2, '0')}]</span>
+    </div>
+    <div class="telemetry-item time-item">
+      <span class="label">TIME_UTC</span>
+      <span class="value" id="utc-clock">00:00:00 UTC</span>
+    </div>
+    <div class="telemetry-item time-item">
+      <span class="label">TIME_LCL</span>
+      <span class="value" id="local-clock">00:00:00 LCL</span>
+    </div>
+  </div>
+</div>
+
+<style>
+  .telemetry-panel {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    padding: 0.85rem 1.2rem;
+    margin-bottom: 2.5rem;
+    color: var(--muted);
+    border-radius: 0px; /* Flat technical aesthetic */
+  }
+
+  .telemetry-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .blinking-dot {
+    width: 6px;
+    height: 6px;
+    background-color: var(--accent);
+    border-radius: 50%;
+    box-shadow: 0 0 6px var(--accent);
+    animation: blink 2s infinite ease-in-out;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+  }
+
+  .status-text {
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    color: var(--text);
+  }
+
+  .terminal-id {
+    font-size: 0.7rem;
+    opacity: 0.6;
+    letter-spacing: 0.05em;
+  }
+
+  .telemetry-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.4rem 1rem;
+  }
+
+  @media (min-width: 540px) {
+    .telemetry-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .telemetry-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .label {
+    opacity: 0.8;
+    letter-spacing: 0.02em;
+  }
+
+  .value {
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .time-item .value {
+    color: var(--text);
+  }
+</style>
+
+<script>
+  function updateClocks() {
+    const utcClock = document.getElementById('utc-clock');
+    const localClock = document.getElementById('local-clock');
+    if (!utcClock || !localClock) return;
+
+    const now = new Date();
+    
+    // UTC time
+    const utcStr = now.toISOString().slice(11, 19) + ' UTC';
+    utcClock.textContent = utcStr;
+    
+    // Local time
+    const hrs = String(now.getHours()).padStart(2, '0');
+    const mins = String(now.getMinutes()).padStart(2, '0');
+    const secs = String(now.getSeconds()).padStart(2, '0');
+    localClock.textContent = `${hrs}:${mins}:${secs} LCL`;
+  }
+
+  // Run on mount
+  updateClocks();
+  const interval = setInterval(updateClocks, 1000);
+
+  // Clean up on route swap
+  document.addEventListener('astro:before-swap', () => {
+    clearInterval(interval);
+  });
+  document.addEventListener('astro:after-swap', () => {
+    updateClocks();
+  });
+</script>

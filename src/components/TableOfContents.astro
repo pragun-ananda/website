@@ -14,84 +14,87 @@ const filtered = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
 ---
 
 {filtered.length > 0 && (
-  <details class="toc" open>
-    <summary class="toc-title">Table of contents</summary>
+  <div class="toc-container tech-box">
+    <div class="toc-header">
+      <span class="toc-title">INDEX // SECTIONS</span>
+    </div>
     <nav class="toc-nav">
-      <ul>
+      <ul class="toc-list">
         {filtered.map((heading) => (
-          <li class={heading.depth === 3 ? 'indent' : ''}>
-            <a href={`#${heading.slug}`}>{heading.text}</a>
+          <li class:list={['toc-item', heading.depth === 3 ? 'indent' : '']}>
+            <a href={`#${heading.slug}`} class="toc-link" data-slug={heading.slug}>
+              <span class="toc-bullet">›</span> {heading.text}
+            </a>
           </li>
         ))}
       </ul>
     </nav>
-  </details>
+  </div>
 )}
 
 <style>
-  .toc {
-    margin: 1.5rem 0;
-    padding: 0.875rem 1.125rem;
+  .toc-container {
+    padding: 1rem 1.15rem;
+    margin-bottom: 1.25rem;
     background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    font-size: 0.875rem;
+  }
+
+  .toc-header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
   }
 
   .toc-title {
-    cursor: pointer;
     color: var(--muted);
-    font-weight: 600;
-    font-size: 0.75rem;
-    letter-spacing: 0.06em;
+    font-weight: 700;
+    font-size: 0.7rem;
+    font-family: var(--font-mono);
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    user-select: none;
-    list-style: none;
   }
 
-  .toc-title::-webkit-details-marker {
-    display: none;
-  }
-
-  .toc-title::before {
-    content: '▸ ';
-    font-size: 0.625rem;
-    vertical-align: middle;
-  }
-
-  details[open] .toc-title::before {
-    content: '▾ ';
-  }
-
-  .toc-title:hover {
-    color: var(--text);
-  }
-
-  .toc-nav {
-    margin-top: 0.625rem;
-  }
-
-  .toc-nav ul {
+  .toc-list {
     list-style: none;
     padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
   }
 
-  .toc-nav li {
-    margin: 0.2rem 0;
+  .toc-item.indent {
+    padding-left: 0.85rem;
   }
 
-  .toc-nav li.indent {
-    padding-left: 1.125rem;
-  }
-
-  .toc-nav a {
+  .toc-link {
     color: var(--muted);
     text-decoration: none;
-    line-height: 1.5;
+    font-size: 0.78rem;
+    font-family: var(--font-mono);
+    line-height: 1.4;
+    display: block;
+    transition: color 0.15s, transform 0.15s;
   }
 
-  .toc-nav a:hover {
+  .toc-bullet {
     color: var(--accent);
+    opacity: 0.6;
+    margin-right: 0.25rem;
+  }
+
+  .toc-link:hover {
+    color: var(--text);
     text-decoration: none;
+    transform: translateX(2px);
+  }
+
+  .toc-link.active {
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .toc-link.active .toc-bullet {
+    opacity: 1;
   }
 </style>

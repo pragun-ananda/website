@@ -1,35 +1,4 @@
-/* === Font Faces === */
-@font-face {
-  font-family: 'JetBrains Mono';
-  src: url('/fonts/jetbrains-mono-regular.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'JetBrains Mono';
-  src: url('/fonts/jetbrains-mono-medium.woff2') format('woff2');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'JetBrains Mono';
-  src: url('/fonts/jetbrains-mono-bold.woff2') format('woff2');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'JetBrains Mono';
-  src: url('/fonts/jetbrains-mono-italic.woff2') format('woff2');
-  font-weight: 400;
-  font-style: italic;
-  font-display: swap;
-}
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Inter:wght@300;400;500;600;700&display=swap');
 
 /* === Reset === */
 *,
@@ -43,49 +12,74 @@
 /* === Theme Variables === */
 :root {
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
-  --max-width: 840px;
+  --font-mono: 'IBM Plex Mono', 'JetBrains Mono', 'Fira Code', monospace;
+  --font-display: 'Outfit', var(--font-sans);
+  --max-width: 780px;
+  --max-width-wide: 1100px;
 
-  /* Dark theme (default) */
-  --bg: #0f1117;
-  --surface: #181c27;
-  --text: #e8eaf0;
-  --muted: #8b92a8;
-  --accent: #6b9fd4;
-  --accent-hover: #89b4e0;
-  --accent-secondary: #c4a872;
-  --border: #222636;
-  --code-bg: #181c27;
-  --tag-bg: #1e2235;
-  --tag-text: #8b92a8;
-  --tag-border: #2a2f45;
+  /* Dark theme (default) - Deep Forest Green & Emerald Cyber look */
+  --bg: #06170e;
+  --bg-grid-dot: rgba(16, 185, 129, 0.09);
+  --surface: #0d281a;
+  --surface-hover: #123522;
+  --text: #e6f4ed;
+  --text-inverse: #06170e;
+  --muted: #82a390;
+  --accent: #10b981; /* Cyber emerald green */
+  --accent-hover: #34d399;
+  --accent-secondary: #84cc16; /* Lime accent */
+  --border: #17432a;
+  --border-hover: #10b981;
+  --code-bg: #091f14;
+  
+  --tag-bg: rgba(16, 185, 129, 0.08);
+  --tag-text: #10b981;
+  --tag-border: rgba(16, 185, 129, 0.25);
+
+  --shadow: 3px 3px 0px #17432a;
+  --shadow-hover: 4px 4px 0px #10b981;
 }
 
 [data-theme='light'] {
-  --bg: #ffffff;
-  --surface: #f5f6f8;
-  --text: #0f1117;
-  --muted: #6b7280;
-  --accent: #1a56a0;
-  --accent-hover: #154a8e;
-  --accent-secondary: #8b6300;
-  --border: #e5e7eb;
-  --code-bg: #f5f6f8;
-  --tag-bg: #eef0f4;
-  --tag-text: #555e70;
-  --tag-border: #dde0e8;
+  /* Light theme - Clean academic print look, sage-tinted white */
+  --bg: #f4f8f5;
+  --bg-grid-dot: rgba(5, 150, 105, 0.06);
+  --surface: #ffffff;
+  --surface-hover: #eef5f0;
+  --text: #072214;
+  --text-inverse: #ffffff;
+  --muted: #567061;
+  --accent: #059669; /* Forest green */
+  --accent-hover: #047857;
+  --accent-secondary: #65a30d;
+  --border: #dbe7df;
+  --border-hover: #059669;
+  --code-bg: #ebf3ee;
+  
+  --tag-bg: rgba(5, 150, 105, 0.08);
+  --tag-text: #059669;
+  --tag-border: rgba(5, 150, 105, 0.25);
+
+  --shadow: 3px 3px 0px #dbe7df;
+  --shadow-hover: 4px 4px 0px #059669;
 }
 
 /* === Base === */
 html {
-  font-family: var(--font-sans);
-  font-size: 16px;
-  line-height: 1.7;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 1.65;
   background-color: var(--bg);
   color: var(--text);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  transition: background-color 0.3s, color 0.3s;
+
+  /* Classic dot grid background in emerald tint */
+  background-image: radial-gradient(var(--bg-grid-dot) 1px, transparent 1px);
+  background-size: 24px 24px;
+  background-attachment: fixed;
 }
 
 body {
@@ -99,18 +93,30 @@ main {
   width: 100%;
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: 2.5rem 2rem;
+  padding: 2.5rem 1.5rem;
+}
+
+main.wide-container {
+  max-width: var(--max-width-wide);
+}
+
+@media (min-width: 640px) {
+  main {
+    padding: 3rem 2rem;
+  }
 }
 
 a {
   color: var(--accent);
-  text-decoration: none;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  transition: color 0.2s, text-decoration-thickness 0.2s;
 }
 
 a:hover {
   color: var(--accent-hover);
-  text-decoration: underline;
-  text-underline-offset: 3px;
+  text-decoration-thickness: 2px;
 }
 
 img {
@@ -122,16 +128,28 @@ hr {
   border: none;
   border-top: 1px solid var(--border);
   margin: 2.5rem 0;
+  position: relative;
+}
+
+hr::after {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 0;
+  width: 24px;
+  height: 1px;
+  background: var(--accent);
 }
 
 ::selection {
   background-color: var(--accent);
-  color: #fff;
+  color: var(--text-inverse);
 }
 
 /* === Scrollbar === */
 ::-webkit-scrollbar {
   width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -140,7 +158,24 @@ hr {
 
 ::-webkit-scrollbar-thumb {
   background: var(--border);
-  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}
+
+/* === Utility Tech Box System === */
+.tech-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tech-box:hover {
+  border-color: var(--border-hover);
+  box-shadow: var(--shadow-hover);
+  background-color: var(--surface-hover);
 }
 
 /* === Shiki dual-theme support === */

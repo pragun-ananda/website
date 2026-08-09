@@ -1,19 +1,35 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PostCard from '../../components/PostCard.astro';
-import { getSortedPosts } from '../../utils/posts';
+import { getSortedPosts, getAllTags } from '../../utils/posts';
 
 const posts = await getSortedPosts();
+const tagsMap = await getAllTags();
+const allTags = Array.from(tagsMap.keys()).sort();
 ---
 
 <BaseLayout title="Writing — Pragun" description="Technical posts on ML, systems, and AI infrastructure.">
   <div class="page-header">
-    <h1 class="page-title">Writing</h1>
-    <p class="subtitle">Notes on ML research, inference systems, and AI engineering.</p>
+    <div class="header-breadcrumbs">ARCHIVE // WRITING</div>
+    <h1 class="page-title">Technical Index</h1>
+    <p class="subtitle">Research notes on ML systems, inference architecture, and AI engineering.</p>
+    
+    <!-- Topic Filter Pills -->
+    <div class="filter-container">
+      <span class="filter-label">FILTER:</span>
+      <div class="filter-pills" id="filter-pills">
+        <button class="filter-pill active" data-filter="all">ALL [{posts.length}]</button>
+        {allTags.map((tag) => (
+          <button class="filter-pill" data-filter={tag.toLowerCase()}>
+            {tag.toUpperCase()} [{tagsMap.get(tag)}]
+          </button>
+        ))}
+      </div>
+    </div>
   </div>
 
   {posts.length > 0 ? (
-    <div class="post-list">
+    <div class="post-timeline" id="posts-container">
       {posts.map((post) => (
         <PostCard
           title={post.data.title}
@@ -21,25 +37,35 @@ const posts = await getSortedPosts();
           pubDate={post.data.pubDate}
           tags={post.data.tags}
           slug={post.id}
+          body={post.body}
         />
       ))}
     </div>
   ) : (
-    <p class="empty">No posts yet.</p>
+    <p class="empty">No posts yet in database.</p>
   )}
 </BaseLayout>
 
 <style>
   .page-header {
-    padding: 2.5rem 0 2.5rem;
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 0;
+    padding: 2.5rem 0 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .header-breadcrumbs {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    margin-bottom: 0.5rem;
   }
 
   .page-title {
-    font-size: clamp(1.75rem, 4vw, 2.25rem);
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 2.75rem);
     font-weight: 800;
-    letter-spacing: -0.03em;
+    letter-spacing: -0.04em;
     margin-bottom: 0.5rem;
     color: var(--text);
   }
@@ -47,10 +73,127 @@ const posts = await getSortedPosts();
   .subtitle {
     color: var(--muted);
     font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+
+  .filter-container {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    padding-top: 0.5rem;
+  }
+
+  .filter-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    font-weight: 600;
+  }
+
+  .filter-pills {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .filter-pill {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 0.25em 0.65em;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    cursor: pointer;
+    border-radius: 0px;
+    letter-spacing: 0.02em;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .filter-pill:hover {
+    color: var(--text);
+    border-color: var(--border-hover);
+  }
+
+  .filter-pill.active {
+    background: var(--tag-bg);
+    color: var(--accent);
+    border-color: var(--accent);
+    box-shadow: 0 0 8px rgba(16, 185, 129, 0.25);
+  }
+
+  .post-timeline {
+    border-left: 1px solid var(--border);
+    padding-left: 1.5rem;
+    margin-left: 0.5rem;
+    position: relative;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  /* Fade out timeline ends */
+  .post-timeline::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -1px;
+    width: 1px;
+    height: 2rem;
+    background: linear-gradient(to top, var(--bg), transparent);
+  }
+
+  .post-timeline::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: -1px;
+    width: 1px;
+    height: 2rem;
+    background: linear-gradient(to bottom, var(--bg), transparent);
   }
 
   .empty {
     color: var(--muted);
     padding-top: 2rem;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
   }
 </style>
+
+<script>
+  function setupFiltering() {
+    const pills = document.querySelectorAll<HTMLButtonElement>('.filter-pill');
+    const cards = document.querySelectorAll<HTMLElement>('.post-card-container');
+    if (!pills.length || !cards.length) return;
+
+    pills.forEach((pill) => {
+      pill.addEventListener('click', () => {
+        const filter = pill.getAttribute('data-filter') ?? 'all';
+        
+        // Update active state
+        pills.forEach((p) => p.classList.remove('active'));
+        pill.classList.add('active');
+
+        // Filter cards
+        cards.forEach((card) => {
+          if (filter === 'all') {
+            card.classList.remove('hidden');
+          } else {
+            const cardTags: string[] = JSON.parse(card.getAttribute('data-tags') ?? '[]');
+            if (cardTags.includes(filter)) {
+              card.classList.remove('hidden');
+            } else {
+              card.classList.add('hidden');
+            }
+          }
+        });
+      });
+    });
+  }
+
+  setupFiltering();
+  document.addEventListener('astro:after-swap', setupFiltering);
+</script>

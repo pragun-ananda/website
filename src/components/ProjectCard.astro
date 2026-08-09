@@ -13,13 +13,13 @@ interface Props {
 const { title, description, url, repo, tags, status } = Astro.props;
 
 const statusLabel: Record<string, string> = {
-  active: 'Active',
-  archived: 'Archived',
-  wip: 'In progress',
+  active: 'ACTIVE',
+  archived: 'ARCHIVED',
+  wip: 'WIP',
 };
 ---
 
-<article class="project-card">
+<article class="project-card tech-box">
   <div class="project-header">
     <h3 class="project-title">
       {url ? <a href={url} target="_blank" rel="noopener noreferrer">{title}</a> : title}
@@ -31,7 +31,7 @@ const statusLabel: Record<string, string> = {
     {tags.length > 0 && <TagList tags={tags} linked={false} />}
     {repo && (
       <a href={repo} target="_blank" rel="noopener noreferrer" class="repo-link">
-        Source ↗
+        [ SOURCE_CODE ↗ ]
       </a>
     )}
   </div>
@@ -39,15 +39,11 @@ const statusLabel: Record<string, string> = {
 
 <style>
   .project-card {
-    padding: 1.25rem 1.375rem;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    background: var(--surface);
-    transition: border-color 0.15s;
-  }
-
-  .project-card:hover {
-    border-color: var(--muted);
+    padding: 1.5rem 1.75rem;
+    border-radius: 0px; /* Flat edges */
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
   }
 
   .project-header {
@@ -59,48 +55,59 @@ const statusLabel: Record<string, string> = {
   }
 
   .project-title {
-    font-size: 1rem;
-    font-weight: 600;
-    letter-spacing: -0.01em;
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
   }
 
   .project-title a {
     color: var(--text);
     text-decoration: none;
+    transition: color 0.2s;
   }
 
   .project-title a:hover {
     color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
 
   .status {
-    font-size: 0.75rem;
-    font-weight: 500;
-    padding: 0.15em 0.55em;
-    border-radius: 4px;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 0.2em 0.6em;
+    border-radius: 0px;
     white-space: nowrap;
+    letter-spacing: 0.05em;
+    border: 1px solid transparent;
   }
 
   .status.active {
     color: var(--accent);
-    background: color-mix(in srgb, var(--accent) 12%, transparent);
+    background: var(--tag-bg);
+    border-color: var(--tag-border);
   }
 
   .status.wip {
     color: var(--accent-secondary);
-    background: color-mix(in srgb, var(--accent-secondary) 12%, transparent);
+    background: rgba(132, 204, 22, 0.06);
+    border-color: rgba(132, 204, 22, 0.2);
   }
 
   .status.archived {
     color: var(--muted);
-    background: var(--border);
+    background: var(--code-bg);
+    border-color: var(--border);
   }
 
   .project-description {
     color: var(--muted);
-    font-size: 0.875rem;
-    margin-bottom: 0.875rem;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
     line-height: 1.6;
+    font-family: var(--font-sans);
   }
 
   .project-footer {
@@ -109,16 +116,18 @@ const statusLabel: Record<string, string> = {
     justify-content: space-between;
     gap: 0.5rem;
     flex-wrap: wrap;
+    margin-top: auto;
   }
 
   .repo-link {
-    font-size: 0.8125rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
     color: var(--muted);
     text-decoration: none;
+    transition: color 0.2s;
   }
 
   .repo-link:hover {
     color: var(--accent);
-    text-decoration: none;
   }
 </style>

@@ -1,8 +1,9 @@
 ---
 import BaseLayout from './BaseLayout.astro';
-import PostMeta from '../components/PostMeta.astro';
 import TableOfContents from '../components/TableOfContents.astro';
+import TagList from '../components/TagList.astro';
 import { readingTime } from '../utils/reading-time';
+import { formatDate } from '../utils/date';
 import '../styles/prose.css';
 
 interface Props {
@@ -20,21 +21,78 @@ interface Props {
 
 const { title, description, pubDate, updatedDate, tags, math, abstract, ogImage, headings, body } = Astro.props;
 const time = readingTime(body);
+const words = body ? body.trim().split(/\s+/).filter(Boolean).length : 0;
+const hasMath = math || (body ? body.includes('$') : false);
 ---
 
-<BaseLayout title={`${title} — Pragun`} description={description} image={ogImage} math={math}>
-  <article>
-    <header class="post-header">
-      <a href="/blog" class="back-link">← Writing</a>
-      <h1 class="post-title">{title}</h1>
-      {abstract && <p class="post-abstract">{abstract}</p>}
-      <PostMeta pubDate={pubDate} updatedDate={updatedDate} readingTime={time} tags={tags} />
-    </header>
-    <TableOfContents headings={headings} />
-    <div class="prose">
-      <slot />
-    </div>
-  </article>
+<BaseLayout title={`${title} — Pragun`} description={description} image={ogImage} math={math} wide={true}>
+  <div class="research-layout">
+    <!-- Left Column: Sticky Telemetry Rail -->
+    <aside class="telemetry-rail">
+      <a href="/blog" class="back-link">
+        <span class="back-bracket">[</span> ← BACK_TO_ARCHIVE <span class="back-bracket">]</span>
+      </a>
+
+      <!-- Article Telemetry HUD -->
+      <div class="hud-box tech-box">
+        <div class="hud-header">
+          <span class="hud-dot"></span>
+          <span class="hud-title">ARTICLE // TELEMETRY</span>
+        </div>
+        <div class="hud-grid">
+          <div class="hud-item">
+            <span class="hud-label">READ_TIME</span>
+            <span class="hud-value">{time.toUpperCase()}</span>
+          </div>
+          <div class="hud-item">
+            <span class="hud-label">WORD_COUNT</span>
+            <span class="hud-value">{words.toLocaleString()}</span>
+          </div>
+          <div class="hud-item">
+            <span class="hud-label">FORMULAS</span>
+            <span class="hud-value">{hasMath ? '[ENABLED]' : '[NONE]'}</span>
+          </div>
+          <div class="hud-item">
+            <span class="hud-label">PUBLISHED</span>
+            <span class="hud-value">{formatDate(pubDate)}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Table of Contents -->
+      <TableOfContents headings={headings} />
+
+      <!-- Post Tags -->
+      {tags.length > 0 && (
+        <div class="tags-sidebar tech-box">
+          <div class="sidebar-header">TOPICS</div>
+          <TagList tags={tags} />
+        </div>
+      )}
+    </aside>
+
+    <!-- Right Column: Main Reading Canvas -->
+    <article class="reading-canvas">
+      <header class="post-header">
+        <div class="post-meta-top">
+          <time datetime={pubDate.toISOString()} class="post-pub-date">{formatDate(pubDate)}</time>
+          <span class="meta-divider">//</span>
+          <span class="post-category">RESEARCH & SYSTEMS</span>
+        </div>
+        <h1 class="post-title">{title}</h1>
+        {abstract && (
+          <div class="post-abstract tech-box">
+            <span class="abstract-badge">ABSTRACT</span>
+            <p>{abstract}</p>
+          </div>
+        )}
+      </header>
+
+      <div class="prose">
+        <slot />
+      </div>
+    </article>
+  </div>
 
   <script>
     import mermaid from 'mermaid';
@@ -47,17 +105,87 @@ const time = readingTime(body);
       container.innerHTML = svg;
       pre.replaceWith(container);
     });
+
+    // Active heading scroll tracking
+    function initHeadingTracker() {
+      const headingElements = document.querySelectorAll('.prose h2, .prose h3');
+      const tocLinks = document.querySelectorAll<HTMLAnchorElement>('.toc-link');
+      if (!headingElements.length || !tocLinks.length) return;
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              const id = entry.target.getAttribute('id');
+              if (!id) return;
+              tocLinks.forEach((link) => {
+                if (link.getAttribute('href') === `#${id}`) {
+                  link.classList.add('active');
+                } else {
+                  link.classList.remove('active');
+                }
+              });
+            }
+          });
+        },
+        { rootMargin: '0px 0px -70% 0px' }
+      );
+
+      headingElements.forEach((h) => observer.observe(h));
+    }
+
+    initHeadingTracker();
+    document.addEventListener('astro:after-swap', initHeadingTracker);
   </script>
 </BaseLayout>
 
 <style>
+  .research-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    align-items: start;
+    padding-top: 1rem;
+  }
+
+  @media (min-width: 880px) {
+    .research-layout {
+      grid-template-columns: 280px minmax(0, 1fr);
+      gap: 3.5rem;
+    }
+  }
+
+  /* Left Rail */
+  .telemetry-rail {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  @media (min-width: 880px) {
+    .telemetry-rail {
+      position: sticky;
+      top: 5.5rem;
+      max-height: calc(100vh - 6rem);
+      overflow-y: auto;
+      padding-right: 0.5rem;
+    }
+  }
+
   .back-link {
-    display: inline-block;
-    font-size: 0.875rem;
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
     color: var(--muted);
     text-decoration: none;
-    margin-bottom: 1.75rem;
-    transition: color 0.15s;
+    transition: color 0.2s;
+    margin-bottom: 0.25rem;
+  }
+
+  .back-bracket {
+    color: var(--accent);
+    margin: 0 0.15rem;
   }
 
   .back-link:hover {
@@ -65,27 +193,137 @@ const time = readingTime(body);
     text-decoration: none;
   }
 
+  /* HUD Box */
+  .hud-box {
+    padding: 1rem 1.15rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    background: var(--surface);
+  }
+
+  .hud-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .hud-dot {
+    width: 6px;
+    height: 6px;
+    background-color: var(--accent);
+    border-radius: 50%;
+    box-shadow: 0 0 6px var(--accent);
+  }
+
+  .hud-title {
+    color: var(--muted);
+    font-weight: 700;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+  }
+
+  .hud-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+
+  .hud-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .hud-label {
+    opacity: 0.75;
+    font-size: 0.72rem;
+  }
+
+  .hud-value {
+    color: var(--accent);
+    font-weight: 600;
+    font-size: 0.72rem;
+  }
+
+  .tags-sidebar {
+    padding: 1rem 1.15rem;
+    background: var(--surface);
+  }
+
+  .sidebar-header {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  /* Right Reading Canvas */
+  .reading-canvas {
+    min-width: 0;
+  }
+
   .post-header {
-    margin-bottom: 0.5rem;
-    padding-bottom: 1.75rem;
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
     border-bottom: 1px solid var(--border);
   }
 
+  .post-meta-top {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-bottom: 0.75rem;
+  }
+
+  .meta-divider {
+    color: var(--accent);
+    opacity: 0.7;
+  }
+
   .post-title {
-    font-size: clamp(1.875rem, 4vw, 2.75rem);
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4.5vw, 2.75rem);
     font-weight: 800;
     letter-spacing: -0.03em;
     line-height: 1.15;
-    margin-bottom: 0.75rem;
+    margin-bottom: 1.25rem;
     color: var(--text);
+    text-shadow: 0 0 30px rgba(16, 185, 129, 0.15);
   }
 
   .post-abstract {
-    font-size: 1.0625rem;
+    padding: 1.25rem 1.5rem;
+    background: var(--surface);
+    border-left: 3px solid var(--accent);
+    margin-top: 1.25rem;
+    position: relative;
+  }
+
+  .abstract-badge {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .post-abstract p {
     color: var(--muted);
+    font-size: 0.95rem;
     line-height: 1.65;
-    margin-top: 0.625rem;
-    margin-bottom: 0.25rem;
-    max-width: 600px;
+    margin: 0;
+    font-family: var(--font-sans);
   }
 </style>
