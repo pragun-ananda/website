@@ -17,27 +17,27 @@
   --font-display: 'Neuton', serif;
   --max-width: 760px;
 
-  /* Dark theme (default) - Terminal Green (#000000 canvas with #4ade80 / #22c55e terminal green) */
-  --bg: #000000;
-  --bg-grid-dot: rgba(34, 197, 94, 0.12);
-  --surface: #050a06;
-  --surface-hover: #0b170e;
-  --text: #4ade80; /* Phosphor terminal green */
-  --text-inverse: #000000;
-  --muted: #22c55e;
-  --accent: #22c55e; /* Electric terminal green */
-  --accent-hover: #86efac;
-  --accent-secondary: #a3e635;
-  --border: #14532d;
-  --border-hover: #22c55e;
-  --code-bg: #050d06;
+  /* Dark theme (default) - Dark Green Jungle Palette (Jungle green, Tea green, Sea green, Deep Obsidian Jungle) */
+  --bg: #050d08;
+  --bg-grid-dot: rgba(82, 183, 136, 0.08);
+  --surface: #0a1b12;
+  --surface-hover: #0f2619;
+  --text: #d8f3dc; /* Relaxing Tea Green text */
+  --text-inverse: #050d08;
+  --muted: #74a887; /* Soft Sea Green / Sage for metadata */
+  --accent: #52b788; /* Soothing Jungle Green */
+  --accent-hover: #95d5b2; /* Mint / Tea Green hover */
+  --accent-secondary: #74c69d;
+  --border: #183e2b;
+  --border-hover: #52b788;
+  --code-bg: #07150e;
   
-  --tag-bg: rgba(34, 197, 94, 0.12);
-  --tag-text: #4ade80;
-  --tag-border: rgba(34, 197, 94, 0.35);
+  --tag-bg: rgba(82, 183, 136, 0.1);
+  --tag-text: #74c69d;
+  --tag-border: rgba(82, 183, 136, 0.3);
 
-  --shadow: 3px 3px 0px #14532d;
-  --shadow-hover: 4px 4px 0px #22c55e;
+  --shadow: 3px 3px 0px #183e2b;
+  --shadow-hover: 4px 4px 0px #52b788;
 }
 
 [data-theme='light'] {
@@ -76,7 +76,7 @@ html {
   text-rendering: optimizeLegibility;
   transition: background-color 0.3s, color 0.3s;
 
-  /* Classic dot grid background in terminal green tint */
+  /* Subtle dot grid background */
   background-image: radial-gradient(var(--bg-grid-dot) 1px, transparent 1px);
   background-size: 24px 24px;
   background-attachment: fixed;

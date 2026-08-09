@@ -28,10 +28,13 @@ const posts = await getSortedPosts();
         <div class="avatar-box">
           <img 
             src="/avatar.jpg" 
-            onerror="this.onerror=null; this.src='/avatar.png';" 
+            onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';" 
             alt="Pragun Ananda" 
             class="avatar-image" 
           />
+          <div class="avatar-fallback">
+            <span class="avatar-initials">PA</span>
+          </div>
         </div>
       </div>
     </div>
@@ -145,7 +148,11 @@ const posts = await getSortedPosts();
     border-radius: 50%;
     overflow: hidden;
     border: 2px solid var(--border);
-    box-shadow: 0 0 20px rgba(16, 185, 129, 0.1);
+    background: var(--surface);
+    box-shadow: 0 0 20px rgba(34, 197, 94, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   @media (min-width: 640px) {
@@ -165,6 +172,23 @@ const posts = await getSortedPosts();
 
   .avatar-box:hover .avatar-image {
     filter: grayscale(0%);
+  }
+
+  .avatar-fallback {
+    display: none;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    background: var(--surface);
+    color: var(--accent);
+  }
+
+  .avatar-initials {
+    font-family: var(--font-serif);
+    font-size: 2.25rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
   }
 
   .posts-section {
