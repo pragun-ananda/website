@@ -59,7 +59,7 @@ const time = readingTime(body);
         )}
       </header>
 
-      <!-- Inline TOC for mobile / tablet (< 1080px) -->
+      <!-- Inline TOC for mobile initial view -->
       <div class="toc-inline-wrapper">
         <TableOfContents headings={headings} mode="inline" />
       </div>
@@ -69,7 +69,7 @@ const time = readingTime(body);
       </div>
     </article>
 
-    <!-- Sticky Sidebar for Wide Displays (>= 1080px) -->
+    <!-- Sticky Sidebar for Desktop (>= 960px) -->
     {headings.length > 0 && (
       <aside class="post-sidebar">
         <div class="sidebar-sticky">
@@ -79,7 +79,29 @@ const time = readingTime(body);
     )}
   </div>
 
+  <!-- Mobile Floating TOC Pill (< 960px) -->
+  {headings.length > 0 && (
+    <div class="mobile-toc-container">
+      <button type="button" class="mobile-toc-button tech-box" id="mobile-toc-btn" aria-label="Open Table of Contents">
+        <span class="toc-icon">📑</span>
+        <span class="toc-btn-text">Outline</span>
+      </button>
+      <div class="mobile-toc-overlay" id="mobile-toc-overlay">
+        <div class="mobile-toc-sheet tech-box">
+          <div class="mobile-toc-sheet-header">
+            <span class="sheet-title">Table of Contents</span>
+            <button type="button" class="sheet-close" id="mobile-toc-close" aria-label="Close">✕</button>
+          </div>
+          <div class="mobile-toc-sheet-body">
+            <TableOfContents headings={headings} mode="sidebar" />
+          </div>
+        </div>
+      </div>
+    </div>
+  )}
+
   <script>
+    // Mermaid initialization
     async function initMermaid() {
       const mermaidNodes = document.querySelectorAll('pre > code.language-mermaid');
       if (!mermaidNodes.length) return;
@@ -120,8 +142,43 @@ const time = readingTime(body);
       }
     }
 
-    initMermaid();
-    document.addEventListener('astro:after-swap', initMermaid);
+    // Scroll Spy & Active Heading Tracker
+    function initScrollSpy() {
+      const links = document.querySelectorAll('.toc-link');
+      if (!links.length) return;
+
+      const headingElements = Array.from(document.querySelectorAll('.prose h2, .prose h3'));
+      if (!headingElements.length) return;
+
+      function onScroll() {
+        const scrollPos = window.scrollY + 140;
+        let currentActiveId = '';
+
+        for (let i = headingElements.length - 1; i >= 0; i--) {
+          const heading = headingElements[i] as HTMLElement;
+          if (heading.offsetTop <= scrollPos) {
+            currentActiveId = heading.id;
+            break;
+          }
+        }
+
+        if (!currentActiveId && headingElements.length > 0) {
+          currentActiveId = headingElements[0].id;
+        }
+
+        links.forEach((link) => {
+          const target = link.getAttribute('data-heading');
+          if (target === currentActiveId) {
+            link.classList.add('active');
+          } else {
+            link.classList.remove('active');
+          }
+        });
+      }
+
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    }
 
     // Top reading progress bar calculation
     function initReadingProgress() {
@@ -139,8 +196,44 @@ const time = readingTime(body);
       updateProgress();
     }
 
-    initReadingProgress();
-    document.addEventListener('astro:after-swap', initReadingProgress);
+    // Mobile TOC Drawer Controller
+    function initMobileToc() {
+      const btn = document.getElementById('mobile-toc-btn');
+      const overlay = document.getElementById('mobile-toc-overlay');
+      const closeBtn = document.getElementById('mobile-toc-close');
+      if (!btn || !overlay) return;
+
+      function openDrawer() {
+        overlay.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeDrawer() {
+        overlay.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+
+      btn.addEventListener('click', openDrawer);
+      closeBtn?.addEventListener('click', closeDrawer);
+      overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) closeDrawer();
+      });
+
+      // Close drawer when link clicked
+      overlay.querySelectorAll('.toc-link').forEach((link) => {
+        link.addEventListener('click', closeDrawer);
+      });
+    }
+
+    function initAll() {
+      initMermaid();
+      initScrollSpy();
+      initReadingProgress();
+      initMobileToc();
+    }
+
+    initAll();
+    document.addEventListener('astro:after-swap', initAll);
   </script>
 </BaseLayout>
 
@@ -170,12 +263,19 @@ const time = readingTime(body);
     width: 100%;
   }
 
-  @media (min-width: 1080px) {
+  @media (min-width: 960px) {
     .post-layout-grid {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) 260px;
-      gap: 3.5rem;
+      grid-template-columns: minmax(0, 1fr) 250px;
+      gap: 3rem;
       align-items: start;
+    }
+  }
+
+  @media (min-width: 1140px) {
+    .post-layout-grid {
+      grid-template-columns: minmax(0, 1fr) 280px;
+      gap: 4rem;
     }
   }
 
@@ -187,7 +287,7 @@ const time = readingTime(body);
     padding-bottom: 4rem;
   }
 
-  @media (min-width: 1080px) {
+  @media (min-width: 960px) {
     .post-container {
       margin: 0;
     }
@@ -267,7 +367,7 @@ const time = readingTime(body);
     margin-bottom: 0.5rem;
   }
 
-  /* Mobile Inline TOC vs Desktop Sticky Sidebar */
+  /* Desktop Sticky Sidebar (>= 960px) */
   .toc-inline-wrapper {
     display: block;
   }
@@ -276,7 +376,7 @@ const time = readingTime(body);
     display: none;
   }
 
-  @media (min-width: 1080px) {
+  @media (min-width: 960px) {
     .toc-inline-wrapper {
       display: none;
     }
@@ -288,9 +388,109 @@ const time = readingTime(body);
 
     .sidebar-sticky {
       position: sticky;
-      top: 6rem;
-      max-height: calc(100vh - 8rem);
+      top: 5.5rem;
+      max-height: calc(100vh - 7rem);
       overflow-y: auto;
     }
+  }
+
+  /* Mobile Floating Outline Button & Drawer (< 960px) */
+  .mobile-toc-container {
+    display: block;
+  }
+
+  @media (min-width: 960px) {
+    .mobile-toc-container {
+      display: none;
+    }
+  }
+
+  .mobile-toc-button {
+    position: fixed;
+    bottom: 1.75rem;
+    right: 1.75rem;
+    z-index: 90;
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.6rem 1rem;
+    border-radius: 30px;
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    font-weight: 600;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(8px);
+    transition: transform 0.2s ease, border-color 0.2s ease;
+  }
+
+  .mobile-toc-button:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  .mobile-toc-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+    display: none;
+    align-items: flex-end;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+  }
+
+  .mobile-toc-overlay.open {
+    display: flex;
+    opacity: 1;
+  }
+
+  .mobile-toc-sheet {
+    width: 100%;
+    max-height: 80vh;
+    background: var(--bg);
+    border-top: 1px solid var(--border);
+    border-radius: 16px 16px 0 0;
+    padding: 1.5rem;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.5);
+  }
+
+  .mobile-toc-sheet-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .sheet-title {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .sheet-close {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 1.25rem;
+    cursor: pointer;
+    padding: 0.25rem;
+    line-height: 1;
+  }
+
+  .sheet-close:hover {
+    color: var(--text);
   }
 </style>
