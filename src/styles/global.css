@@ -17,7 +17,7 @@
   --font-display: 'Neuton', serif;
   --max-width: 760px;
 
-  /* Dark theme (default) - Dark Green Jungle Palette (Jungle green, Tea green, Sea green, Deep Obsidian Jungle) */
+  /* Dark theme (default) - Dark Green Jungle Palette */
   --bg: #050d08;
   --bg-grid-dot: rgba(82, 183, 136, 0.08);
   --surface: #0a1b12;
@@ -30,7 +30,7 @@
   --accent-secondary: #74c69d;
   --border: #183e2b;
   --border-hover: #52b788;
-  --code-bg: #07150e;
+  --code-bg: #07150e; /* Deep seamless jungle tone */
   
   --tag-bg: rgba(82, 183, 136, 0.1);
   --tag-text: #74c69d;
@@ -41,7 +41,7 @@
 }
 
 [data-theme='light'] {
-  /* Light theme - Clean academic print look, sage-tinted white (preserved) */
+  /* Light theme - Clean academic print look */
   --bg: #f4f8f5;
   --bg-grid-dot: rgba(5, 150, 105, 0.06);
   --surface: #ffffff;
@@ -174,9 +174,23 @@ hr::after {
   background-color: var(--surface-hover);
 }
 
-/* === Shiki dual-theme support === */
-:root:not([data-theme='light']) .astro-code,
+/* === Shiki dual-theme support seamlessly matching canvas === */
+:root:not([data-theme='light']) .astro-code {
+  background-color: var(--code-bg) !important;
+  color: var(--shiki-dark) !important;
+}
+
 :root:not([data-theme='light']) .astro-code span {
   color: var(--shiki-dark) !important;
-  background-color: var(--shiki-dark-bg) !important;
+  background-color: transparent !important;
+}
+
+[data-theme='light'] .astro-code {
+  background-color: var(--code-bg) !important;
+  color: var(--shiki-light) !important;
+}
+
+[data-theme='light'] .astro-code span {
+  color: var(--shiki-light) !important;
+  background-color: transparent !important;
 }
