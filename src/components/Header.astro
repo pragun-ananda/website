@@ -35,8 +35,7 @@ const navLinks = [
 <style>
   .header {
     border-bottom: 1px solid var(--border);
-    /* Dynamically translucent background for both light and dark modes */
-    background: color-mix(in srgb, var(--bg) 80%, transparent);
+    background: color-mix(in srgb, var(--bg) 85%, transparent);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     position: sticky;
@@ -78,10 +77,11 @@ const navLinks = [
   }
 
   .logo-text {
-    font-family: var(--font-display);
+    font-family: var(--font-serif);
     font-weight: 700;
-    font-size: 1.05rem;
-    letter-spacing: -0.03em;
+    font-size: 1.25rem;
+    letter-spacing: -0.02em;
+    color: var(--text);
   }
 
   .nav-links {
@@ -99,8 +99,9 @@ const navLinks = [
   .nav-link {
     color: var(--muted);
     text-decoration: none;
-    font-size: 0.85rem;
-    font-family: var(--font-mono);
+    font-size: 1rem;
+    font-family: var(--font-sans);
+    font-weight: 500;
     display: inline-flex;
     align-items: center;
     transition: color 0.2s;

@@ -17,31 +17,31 @@
   --font-display: 'Neuton', serif;
   --max-width: 760px;
 
-  /* Dark theme (default) - Deep Forest Green & Emerald Cyber look */
-  --bg: #06170e;
-  --bg-grid-dot: rgba(16, 185, 129, 0.08);
-  --surface: #0d281a;
-  --surface-hover: #123522;
-  --text: #eaf5ee;
-  --text-inverse: #06170e;
-  --muted: #8faea0;
-  --accent: #10b981; /* Cyber emerald green */
-  --accent-hover: #34d399;
-  --accent-secondary: #84cc16;
-  --border: #17432a;
-  --border-hover: #10b981;
-  --code-bg: #091f14;
+  /* Dark theme (default) - Terminal Green (#000000 canvas with #4ade80 / #22c55e terminal green) */
+  --bg: #000000;
+  --bg-grid-dot: rgba(34, 197, 94, 0.12);
+  --surface: #050a06;
+  --surface-hover: #0b170e;
+  --text: #4ade80; /* Phosphor terminal green */
+  --text-inverse: #000000;
+  --muted: #22c55e;
+  --accent: #22c55e; /* Electric terminal green */
+  --accent-hover: #86efac;
+  --accent-secondary: #a3e635;
+  --border: #14532d;
+  --border-hover: #22c55e;
+  --code-bg: #050d06;
   
-  --tag-bg: rgba(16, 185, 129, 0.08);
-  --tag-text: #10b981;
-  --tag-border: rgba(16, 185, 129, 0.25);
+  --tag-bg: rgba(34, 197, 94, 0.12);
+  --tag-text: #4ade80;
+  --tag-border: rgba(34, 197, 94, 0.35);
 
-  --shadow: 3px 3px 0px #17432a;
-  --shadow-hover: 4px 4px 0px #10b981;
+  --shadow: 3px 3px 0px #14532d;
+  --shadow-hover: 4px 4px 0px #22c55e;
 }
 
 [data-theme='light'] {
-  /* Light theme - Clean academic print look, sage-tinted white */
+  /* Light theme - Clean academic print look, sage-tinted white (preserved) */
   --bg: #f4f8f5;
   --bg-grid-dot: rgba(5, 150, 105, 0.06);
   --surface: #ffffff;
@@ -76,7 +76,7 @@ html {
   text-rendering: optimizeLegibility;
   transition: background-color 0.3s, color 0.3s;
 
-  /* Classic dot grid background in emerald tint */
+  /* Classic dot grid background in terminal green tint */
   background-image: radial-gradient(var(--bg-grid-dot) 1px, transparent 1px);
   background-size: 24px 24px;
   background-attachment: fixed;
