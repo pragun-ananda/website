@@ -29,40 +29,55 @@ const time = readingTime(body);
     <div class="reading-progress-bar" id="reading-progress"></div>
   </div>
 
-  <article class="post-container">
-    <header class="post-header">
-      <div class="back-link-wrapper">
-        <a href="/blog" class="back-link">← Back to Writing</a>
-      </div>
-      
-      <h1 class="post-title">{title}</h1>
-
-      <div class="post-meta-line">
-        <time datetime={pubDate.toISOString()} class="post-date">{formatDate(pubDate)}</time>
-        <span class="meta-dot">·</span>
-        <span class="post-reading-time">{time}</span>
-        {tags.length > 0 && (
-          <>
-            <span class="meta-dot">·</span>
-            <TagList tags={tags} />
-          </>
-        )}
-      </div>
-
-      {abstract && (
-        <div class="post-abstract">
-          <div class="abstract-label">💡 Summary</div>
-          <p>{abstract}</p>
+  <div class="post-layout-grid">
+    <!-- Main Reading Column -->
+    <article class="post-container">
+      <header class="post-header">
+        <div class="back-link-wrapper">
+          <a href="/blog" class="back-link">← Back to Writing</a>
         </div>
-      )}
-    </header>
+        
+        <h1 class="post-title">{title}</h1>
 
-    <TableOfContents headings={headings} />
+        <div class="post-meta-line">
+          <time datetime={pubDate.toISOString()} class="post-date">{formatDate(pubDate)}</time>
+          <span class="meta-dot">·</span>
+          <span class="post-reading-time">{time}</span>
+          {tags.length > 0 && (
+            <>
+              <span class="meta-dot">·</span>
+              <TagList tags={tags} />
+            </>
+          )}
+        </div>
 
-    <div class="prose">
-      <slot />
-    </div>
-  </article>
+        {abstract && (
+          <div class="post-abstract">
+            <div class="abstract-label">💡 Summary</div>
+            <p>{abstract}</p>
+          </div>
+        )}
+      </header>
+
+      <!-- Inline TOC for mobile / tablet (< 1080px) -->
+      <div class="toc-inline-wrapper">
+        <TableOfContents headings={headings} mode="inline" />
+      </div>
+
+      <div class="prose">
+        <slot />
+      </div>
+    </article>
+
+    <!-- Sticky Sidebar for Wide Displays (>= 1080px) -->
+    {headings.length > 0 && (
+      <aside class="post-sidebar">
+        <div class="sidebar-sticky">
+          <TableOfContents headings={headings} mode="sidebar" />
+        </div>
+      </aside>
+    )}
+  </div>
 
   <script>
     async function initMermaid() {
@@ -149,11 +164,33 @@ const time = readingTime(body);
     transition: width 0.1s ease-out;
   }
 
+  /* Responsive Grid Layout */
+  .post-layout-grid {
+    display: block;
+    width: 100%;
+  }
+
+  @media (min-width: 1080px) {
+    .post-layout-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 260px;
+      gap: 3.5rem;
+      align-items: start;
+    }
+  }
+
   .post-container {
     max-width: 760px;
+    width: 100%;
     margin: 0 auto;
     padding-top: 1rem;
     padding-bottom: 4rem;
+  }
+
+  @media (min-width: 1080px) {
+    .post-container {
+      margin: 0;
+    }
   }
 
   .back-link-wrapper {
@@ -204,32 +241,56 @@ const time = readingTime(body);
   }
 
   .post-reading-time {
-    color: var(--text);
-    font-weight: 500;
+    color: var(--accent);
   }
 
+  /* Abstract / Summary Callout */
   .post-abstract {
-    margin-top: 1.75rem;
-    padding: 1.15rem 1.4rem;
+    margin-top: 2rem;
+    padding: 1.25rem 1.5rem;
     background: rgba(16, 185, 129, 0.05);
-    border-left: 4px solid var(--accent);
+    border-left: 3px solid var(--accent);
     border-radius: 4px;
+    font-family: var(--font-serif);
+    font-size: 1.15rem;
+    line-height: 1.7;
+    color: var(--text);
   }
 
   .abstract-label {
-    font-family: var(--font-sans);
-    font-size: 0.85rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
     font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
     color: var(--accent);
-    letter-spacing: 0.03em;
-    margin-bottom: 0.4rem;
+    margin-bottom: 0.5rem;
   }
 
-  .post-abstract p {
-    margin: 0;
-    font-size: 1.05rem;
-    line-height: 1.65;
-    color: var(--text);
-    font-family: var(--font-serif);
+  /* Mobile Inline TOC vs Desktop Sticky Sidebar */
+  .toc-inline-wrapper {
+    display: block;
+  }
+
+  .post-sidebar {
+    display: none;
+  }
+
+  @media (min-width: 1080px) {
+    .toc-inline-wrapper {
+      display: none;
+    }
+
+    .post-sidebar {
+      display: block;
+      padding-top: 5rem;
+    }
+
+    .sidebar-sticky {
+      position: sticky;
+      top: 6rem;
+      max-height: calc(100vh - 8rem);
+      overflow-y: auto;
+    }
   }
 </style>

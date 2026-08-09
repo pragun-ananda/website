@@ -7,32 +7,76 @@ interface Heading {
 
 interface Props {
   headings: Heading[];
+  mode?: 'inline' | 'sidebar';
 }
 
-const { headings } = Astro.props;
+const { headings, mode = 'inline' } = Astro.props;
 const filtered = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
 ---
 
 {filtered.length > 0 && (
-  <details class="toc-outline" open>
-    <summary class="toc-summary">
-      <span class="toc-title">Table of Contents</span>
-    </summary>
-    <nav class="toc-nav">
-      <ol class="toc-list">
-        {filtered.map((heading) => (
-          <li class:list={['toc-item', heading.depth === 3 ? 'indent' : '']}>
-            <a href={`#${heading.slug}`} class="toc-link">
-              {heading.text}
-            </a>
-          </li>
-        ))}
-      </ol>
-    </nav>
-  </details>
+  mode === 'sidebar' ? (
+    <div class="toc-sidebar">
+      <div class="toc-sidebar-header">
+        <span class="toc-sidebar-label">On This Page</span>
+      </div>
+      <nav class="toc-nav">
+        <ol class="toc-list">
+          {filtered.map((heading) => (
+            <li class:list={['toc-item', heading.depth === 3 ? 'indent' : '']}>
+              <a href={`#${heading.slug}`} class="toc-link">
+                {heading.text}
+              </a>
+            </li>
+          ))}
+        </ol>
+      </nav>
+    </div>
+  ) : (
+    <details class="toc-outline" open>
+      <summary class="toc-summary">
+        <span class="toc-title">Table of Contents</span>
+      </summary>
+      <nav class="toc-nav">
+        <ol class="toc-list">
+          {filtered.map((heading) => (
+            <li class:list={['toc-item', heading.depth === 3 ? 'indent' : '']}>
+              <a href={`#${heading.slug}`} class="toc-link">
+                {heading.text}
+              </a>
+            </li>
+          ))}
+        </ol>
+      </nav>
+    </details>
+  )
 )}
 
 <style>
+  /* Sidebar mode (wide desktop) */
+  .toc-sidebar {
+    padding: 1.25rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-family: var(--font-mono);
+  }
+
+  .toc-sidebar-header {
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .toc-sidebar-label {
+    color: var(--text);
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  /* Inline mode (mobile / default) */
   .toc-outline {
     margin: 2rem 0;
     padding: 0.9rem 1.25rem;
@@ -70,6 +114,10 @@ const filtered = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
   }
 
   .toc-nav {
+    margin-top: 0.5rem;
+  }
+
+  .toc-outline .toc-nav {
     margin-top: 0.75rem;
     padding-top: 0.75rem;
     border-top: 1px dashed var(--border);
@@ -77,14 +125,14 @@ const filtered = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
 
   .toc-list {
     margin: 0;
-    padding-left: 1.25rem;
+    padding-left: 1.2rem;
     display: flex;
     flex-direction: column;
-    gap: 0.35rem;
+    gap: 0.45rem;
   }
 
   .toc-item.indent {
-    padding-left: 1rem;
+    padding-left: 0.75rem;
     list-style-type: circle;
   }
 
@@ -92,7 +140,9 @@ const filtered = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
     color: var(--muted);
     text-decoration: none;
     font-size: 0.825rem;
+    line-height: 1.4;
     transition: color 0.15s ease;
+    display: inline-block;
   }
 
   .toc-link:hover {

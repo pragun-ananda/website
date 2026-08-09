@@ -15,7 +15,10 @@
   --font-sans: 'Alegreya Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', 'IBM Plex Mono', Menlo, monospace;
   --font-display: 'Neuton', serif;
-  --max-width: 760px;
+  
+  /* Container system */
+  --max-width: 1160px; /* Wide desktop container */
+  --prose-width: 760px; /* Optimal reading column */
 
   /* Dark theme (default) - Dark Green Jungle Palette */
   --bg: #050d08;
@@ -99,6 +102,12 @@ main {
 @media (min-width: 640px) {
   main {
     padding: 3.5rem 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  main {
+    padding: 4rem 2.5rem;
   }
 }
 
