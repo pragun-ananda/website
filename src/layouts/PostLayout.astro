@@ -268,7 +268,7 @@ const time = readingTime(body);
       display: grid;
       grid-template-columns: minmax(0, 1fr) 250px;
       gap: 3rem;
-      align-items: start;
+      align-items: stretch;
     }
   }
 
@@ -276,6 +276,7 @@ const time = readingTime(body);
     .post-layout-grid {
       grid-template-columns: minmax(0, 1fr) 280px;
       gap: 4rem;
+      align-items: stretch;
     }
   }
 
@@ -374,6 +375,7 @@ const time = readingTime(body);
 
   .post-sidebar {
     display: none;
+    height: 100%;
   }
 
   @media (min-width: 960px) {
@@ -383,13 +385,14 @@ const time = readingTime(body);
 
     .post-sidebar {
       display: block;
-      padding-top: 5rem;
+      height: 100%;
+      padding-top: 4.5rem;
     }
 
     .sidebar-sticky {
       position: sticky;
-      top: 5.5rem;
-      max-height: calc(100vh - 7rem);
+      top: 5rem;
+      max-height: calc(100vh - 6rem);
       overflow-y: auto;
     }
   }
