@@ -1,26 +1,26 @@
 /* === Prose content styles === */
 .prose {
-  line-height: 1.8;
+  line-height: 1.85;
   color: var(--text);
-  font-size: 1rem;
-  font-family: var(--font-sans); /* Long-form reading comfort */
+  font-size: 1.05rem;
+  font-family: var(--font-sans);
 }
 
 .prose h1 {
   font-family: var(--font-display);
-  font-size: 2.1rem;
+  font-size: 2.25rem;
   line-height: 1.25;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: -0.03em;
-  margin: 3rem 0 1.25rem;
+  margin: 3.5rem 0 1.25rem;
   color: var(--text);
 }
 
 .prose h2 {
   font-family: var(--font-display);
-  font-size: 1.5rem;
-  line-height: 1.3;
-  font-weight: 600;
+  font-size: 1.55rem;
+  line-height: 1.35;
+  font-weight: 700;
   letter-spacing: -0.02em;
   margin: 3rem 0 1rem;
   padding-bottom: 0.5rem;
@@ -42,7 +42,7 @@
 
 .prose h3 {
   font-family: var(--font-display);
-  font-size: 1.2rem;
+  font-size: 1.25rem;
   line-height: 1.4;
   font-weight: 600;
   letter-spacing: -0.015em;
@@ -51,31 +51,31 @@
 }
 
 .prose p {
-  margin: 1.25rem 0;
+  margin: 1.4rem 0;
   color: var(--text);
   opacity: 0.95;
 }
 
 .prose ul,
 .prose ol {
-  margin: 1.25rem 0;
+  margin: 1.5rem 0;
   padding-left: 1.5rem;
-  font-family: var(--font-mono);
-  font-size: 0.9rem;
+  font-size: 1rem;
 }
 
 .prose li {
-  margin: 0.5rem 0;
-  opacity: 0.95;
+  margin: 0.6rem 0;
+  line-height: 1.75;
 }
 
 .prose li::marker {
   color: var(--accent);
+  font-weight: 700;
 }
 
 .prose li > ul,
 .prose li > ol {
-  margin: 0.25rem 0;
+  margin: 0.35rem 0;
 }
 
 /* Inline code */
@@ -84,22 +84,23 @@
   font-size: 0.86em;
   background: var(--code-bg);
   border: 1px solid var(--border);
-  padding: 0.15em 0.4em;
-  color: var(--accent);
+  border-radius: 4px;
+  padding: 0.15em 0.45em;
+  color: var(--accent-hover);
   word-break: break-word;
 }
 
 /* Code blocks */
 .prose pre {
-  font-size: 13px;
+  font-size: 13.5px;
   line-height: 1.65;
   background: var(--code-bg) !important;
   border: 1px solid var(--border);
+  border-radius: 6px;
   padding: 1.25rem 1.5rem;
   overflow-x: auto;
-  margin: 1.75rem 0;
+  margin: 2rem 0;
   box-shadow: var(--shadow);
-  position: relative;
 }
 
 .prose pre code {
@@ -111,17 +112,27 @@
   color: inherit;
 }
 
-/* Blockquotes & Callouts */
+/* Blockquotes & Insight Callouts */
 .prose blockquote {
-  border-left: 3px solid var(--accent);
-  padding: 0.75rem 1rem 0.75rem 1.25rem;
-  margin: 1.75rem 0;
+  border-left: 4px solid var(--accent);
+  padding: 1.15rem 1.4rem;
+  margin: 2rem 0;
   color: var(--text);
   font-style: normal;
-  background: rgba(16, 185, 129, 0.04);
-  border-top: 1px solid var(--border);
-  border-right: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
+  background: rgba(16, 185, 129, 0.05);
+  border-radius: 4px;
+}
+
+.prose blockquote p {
+  margin: 0.5rem 0;
+}
+
+.prose blockquote p:first-child {
+  margin-top: 0;
+}
+
+.prose blockquote p:last-child {
+  margin-bottom: 0;
 }
 
 /* Tables */
@@ -152,11 +163,12 @@
   background: rgba(16, 185, 129, 0.02);
 }
 
-/* Images */
+/* Images & Figures */
 .prose img {
+  border-radius: 6px;
   border: 1px solid var(--border);
-  margin: 2.25rem 0;
-  box-shadow: var(--shadow);
+  margin: 2rem auto;
+  display: block;
 }
 
 /* Horizontal rules */
@@ -169,42 +181,26 @@
 /* Links */
 .prose a {
   color: var(--accent);
-  text-decoration: none;
-  position: relative;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
   transition: color 0.15s;
-}
-
-.prose a::after {
-  content: '';
-  position: absolute;
-  width: 100%;
-  transform: scaleX(0);
-  height: 1px;
-  bottom: -1px;
-  left: 0;
-  background-color: var(--accent-hover);
-  transform-origin: bottom right;
-  transition: transform 0.25s ease-out;
 }
 
 .prose a:hover {
   color: var(--accent-hover);
-}
-
-.prose a:hover::after {
-  transform: scaleX(1);
-  transform-origin: bottom left;
+  text-decoration-thickness: 2px;
 }
 
 /* KaTeX math display blocks */
 .prose .katex-display {
   overflow-x: auto;
   overflow-y: hidden;
-  padding: 1rem 1.25rem;
-  margin: 1.75rem 0;
+  padding: 1.25rem 1.5rem;
+  margin: 2rem 0;
   background: var(--code-bg);
   border: 1px solid var(--border);
-  box-shadow: var(--shadow);
+  border-radius: 4px;
 }
 
 .prose .katex {
@@ -218,8 +214,8 @@
   text-align: center;
   background: var(--code-bg);
   border: 1px solid var(--border);
+  border-radius: 6px;
   padding: 1.5rem;
-  box-shadow: var(--shadow);
 }
 
 .prose .mermaid svg {

@@ -14,87 +14,89 @@ const filtered = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
 ---
 
 {filtered.length > 0 && (
-  <div class="toc-container tech-box">
-    <div class="toc-header">
-      <span class="toc-title">INDEX // SECTIONS</span>
-    </div>
+  <details class="toc-outline" open>
+    <summary class="toc-summary">
+      <span class="toc-title">Table of Contents</span>
+    </summary>
     <nav class="toc-nav">
-      <ul class="toc-list">
+      <ol class="toc-list">
         {filtered.map((heading) => (
           <li class:list={['toc-item', heading.depth === 3 ? 'indent' : '']}>
-            <a href={`#${heading.slug}`} class="toc-link" data-slug={heading.slug}>
-              <span class="toc-bullet">›</span> {heading.text}
+            <a href={`#${heading.slug}`} class="toc-link">
+              {heading.text}
             </a>
           </li>
         ))}
-      </ul>
+      </ol>
     </nav>
-  </div>
+  </details>
 )}
 
 <style>
-  .toc-container {
-    padding: 1rem 1.15rem;
-    margin-bottom: 1.25rem;
-    background: var(--surface);
-  }
-
-  .toc-header {
-    border-bottom: 1px solid var(--border);
-    padding-bottom: 0.5rem;
-    margin-bottom: 0.75rem;
-  }
-
-  .toc-title {
-    color: var(--muted);
-    font-weight: 700;
-    font-size: 0.7rem;
+  .toc-outline {
+    margin: 2rem 0;
+    padding: 0.9rem 1.25rem;
+    background: rgba(16, 185, 129, 0.04);
+    border: 1px solid var(--border);
+    border-radius: 4px;
     font-family: var(--font-mono);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+  }
+
+  .toc-summary {
+    cursor: pointer;
+    color: var(--text);
+    font-weight: 600;
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+    user-select: none;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .toc-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .toc-summary::before {
+    content: "▸";
+    color: var(--accent);
+    transition: transform 0.2s ease;
+  }
+
+  .toc-outline[open] .toc-summary::before {
+    transform: rotate(90deg);
+  }
+
+  .toc-nav {
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px dashed var(--border);
   }
 
   .toc-list {
-    list-style: none;
-    padding: 0;
     margin: 0;
+    padding-left: 1.25rem;
     display: flex;
     flex-direction: column;
-    gap: 0.4rem;
+    gap: 0.35rem;
   }
 
   .toc-item.indent {
-    padding-left: 0.85rem;
+    padding-left: 1rem;
+    list-style-type: circle;
   }
 
   .toc-link {
     color: var(--muted);
     text-decoration: none;
-    font-size: 0.78rem;
-    font-family: var(--font-mono);
-    line-height: 1.4;
-    display: block;
-    transition: color 0.15s, transform 0.15s;
-  }
-
-  .toc-bullet {
-    color: var(--accent);
-    opacity: 0.6;
-    margin-right: 0.25rem;
+    font-size: 0.825rem;
+    transition: color 0.15s ease;
   }
 
   .toc-link:hover {
-    color: var(--text);
-    text-decoration: none;
-    transform: translateX(2px);
-  }
-
-  .toc-link.active {
     color: var(--accent);
-    font-weight: 600;
-  }
-
-  .toc-link.active .toc-bullet {
-    opacity: 1;
+    text-decoration: underline;
   }
 </style>
