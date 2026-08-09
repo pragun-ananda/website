@@ -65,20 +65,32 @@ flowchart TB
     IN["Input Tokens"] --> EMB["Embedding"]
     EMB --> PE["+ Positional Encoding"]
 
-    PE --> Q["Q"] & K["K"] & V["V"]
+    PE --> Q["Query (Q)"]
+    PE --> K["Key (K)"]
+    PE --> V["Value (V)"]
 
-    Q & K & V --> H1["Head 1"]
-    Q & K & V --> H2["Head 2"]
-    Q & K & V --> Hh["Head h"]
+    Q --> H1["Head 1"]
+    K --> H1
+    V --> H1
 
-    H1 & H2 & Hh --> CAT["Concat + Project"]
+    Q --> H2["Head 2"]
+    K --> H2
+    V --> H2
 
-    CAT --> ADD1(("+"))
+    Q --> Hh["Head h"]
+    K --> Hh
+    V --> Hh
+
+    H1 --> CAT["Concat + Project"]
+    H2 --> CAT
+    Hh --> CAT
+
+    CAT --> ADD1["+"]
     PE -.->|residual| ADD1
     ADD1 --> LN1["Layer Norm"]
 
     LN1 --> FF["Feed-Forward Network"]
-    FF --> ADD2(("+"))
+    FF --> ADD2["+"]
     LN1 -.->|residual| ADD2
     ADD2 --> LN2["Layer Norm"]
 

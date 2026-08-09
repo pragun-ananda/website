@@ -65,16 +65,48 @@ const time = readingTime(body);
   </article>
 
   <script>
-    import mermaid from 'mermaid';
-    mermaid.initialize({ startOnLoad: false, theme: 'dark' });
-    document.querySelectorAll('pre > code.language-mermaid').forEach(async (el, i) => {
-      const pre = el.parentElement!;
-      const container = document.createElement('div');
-      container.className = 'mermaid';
-      const { svg } = await mermaid.render(`mermaid-${i}`, el.textContent ?? '');
-      container.innerHTML = svg;
-      pre.replaceWith(container);
-    });
+    async function initMermaid() {
+      const mermaidNodes = document.querySelectorAll('pre > code.language-mermaid');
+      if (!mermaidNodes.length) return;
+
+      try {
+        const { default: mermaid } = await import('mermaid');
+        mermaid.initialize({
+          startOnLoad: false,
+          theme: 'dark',
+          suppressErrorRendering: true,
+        });
+
+        for (let i = 0; i < mermaidNodes.length; i++) {
+          const el = mermaidNodes[i];
+          const pre = el.parentElement;
+          if (!pre) continue;
+          const code = el.textContent?.trim() ?? '';
+          if (!code) continue;
+
+          try {
+            const id = `mermaid-graph-${Date.now()}-${i}`;
+            const { svg } = await mermaid.render(id, code);
+            const container = document.createElement('div');
+            container.className = 'mermaid';
+            container.innerHTML = svg;
+            pre.replaceWith(container);
+          } catch (renderError) {
+            console.warn('Mermaid render error:', renderError);
+            document.querySelectorAll('[id^="dmermaid-"], [id^="mermaid-"]').forEach((node) => {
+              if (node.tagName === 'DIV' && !node.classList.contains('mermaid') && node.textContent?.includes('Syntax error')) {
+                node.remove();
+              }
+            });
+          }
+        }
+      } catch (err) {
+        console.warn('Mermaid module load failed:', err);
+      }
+    }
+
+    initMermaid();
+    document.addEventListener('astro:after-swap', initMermaid);
 
     // Top reading progress bar calculation
     function initReadingProgress() {
