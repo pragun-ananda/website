@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Alegreya+Sans:ital,wght@0,300;0,400;0,500;0,700;0,800;1,400&family=Neuton:ital,wght@0,300;0,400;0,700;0,800;1,400&family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;1,400&display=swap');
 
 /* === Reset === */
 *,
@@ -11,23 +11,23 @@
 
 /* === Theme Variables === */
 :root {
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-  --font-mono: 'IBM Plex Mono', 'JetBrains Mono', 'Fira Code', monospace;
-  --font-display: 'Outfit', var(--font-sans);
-  --max-width: 780px;
-  --max-width-wide: 1100px;
+  --font-serif: 'Neuton', Georgia, serif;
+  --font-sans: 'Alegreya Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'IBM Plex Mono', Menlo, monospace;
+  --font-display: 'Neuton', serif;
+  --max-width: 760px;
 
   /* Dark theme (default) - Deep Forest Green & Emerald Cyber look */
   --bg: #06170e;
-  --bg-grid-dot: rgba(16, 185, 129, 0.09);
+  --bg-grid-dot: rgba(16, 185, 129, 0.08);
   --surface: #0d281a;
   --surface-hover: #123522;
-  --text: #e6f4ed;
+  --text: #eaf5ee;
   --text-inverse: #06170e;
-  --muted: #82a390;
+  --muted: #8faea0;
   --accent: #10b981; /* Cyber emerald green */
   --accent-hover: #34d399;
-  --accent-secondary: #84cc16; /* Lime accent */
+  --accent-secondary: #84cc16;
   --border: #17432a;
   --border-hover: #10b981;
   --code-bg: #091f14;
@@ -46,9 +46,9 @@
   --bg-grid-dot: rgba(5, 150, 105, 0.06);
   --surface: #ffffff;
   --surface-hover: #eef5f0;
-  --text: #072214;
+  --text: #0b2e1b;
   --text-inverse: #ffffff;
-  --muted: #567061;
+  --muted: #4e6b5a;
   --accent: #059669; /* Forest green */
   --accent-hover: #047857;
   --accent-secondary: #65a30d;
@@ -66,9 +66,9 @@
 
 /* === Base === */
 html {
-  font-family: var(--font-mono);
-  font-size: 14px;
-  line-height: 1.65;
+  font-family: var(--font-sans);
+  font-size: 17.5px;
+  line-height: 1.75;
   background-color: var(--bg);
   color: var(--text);
   -webkit-font-smoothing: antialiased;
@@ -96,13 +96,9 @@ main {
   padding: 2.5rem 1.5rem;
 }
 
-main.wide-container {
-  max-width: var(--max-width-wide);
-}
-
 @media (min-width: 640px) {
   main {
-    padding: 3rem 2rem;
+    padding: 3.5rem 2rem;
   }
 }
 
@@ -136,7 +132,7 @@ hr::after {
   position: absolute;
   top: -1px;
   left: 0;
-  width: 24px;
+  width: 28px;
   height: 1px;
   background: var(--accent);
 }
